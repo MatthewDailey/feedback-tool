@@ -1,2 +1,5 @@
 node_modules
 ui-debug.log
+.idea
+public/app.js
+firebase-debug.log
