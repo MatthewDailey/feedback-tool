@@ -4,7 +4,8 @@
   "scripts": {
     "firebase": "node_modules/firebase-tools/lib/bin/firebase.js",
     "build-dev": "./node_modules/.bin/esbuild src/app.jsx --bundle --define:process.env.NODE_ENV=\\\"development\\\" --outfile=public/app.js",
-    "build-prod": "./node_modules/.bin/esbuild src/app.jsx --bundle --define:process.env.NODE_ENV=\\\"production\\\" --outfile=public/app.js"
+    "build-prod": "./node_modules/.bin/esbuild src/app.jsx --bundle --define:process.env.NODE_ENV=\\\"production\\\" --outfile=public/app.js",
+    "watch": "fswatch -0 ./src/* | xargs -0 -n 1 -I {} npm run build-dev"
   },
   "devDependencies": {
     "esbuild": "^0.8.17",
