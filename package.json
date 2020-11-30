@@ -1,0 +1,10 @@
+{
+  "name": "feedback-tool",
+  "version": "0.1.0",
+  "scripts": {
+    "firebase": "node_modules/firebase-tools/lib/bin/firebase.js",
+  },
+  "devDependencies": {
+    "firebase-tools": "^8.16.2"
+  }
+}
