@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 
 type Content = string
 
-const message: Content = 'hidy ho pals'
+const message: Content = 'hidy pals'
 
 ReactDOM.render(
   <h1>{`${message}`}</h1>,
