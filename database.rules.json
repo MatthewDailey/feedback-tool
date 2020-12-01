@@ -28,7 +28,7 @@
     "feedbackSessionRequests": {
       "$id": {
         ".read": "true",
-        ".write": "auth != null && root.child('feedbackSessions').child(data.child('sessionId').val()).child('ownerId') === auth.uid",
+        ".write": "auth != null && root.child('feedbackSessions').child(data.child('sessionId').val()).child('ownerId').val() === auth.uid",
 
         "sessionId": { ".validate": true },
         "responseId": { ".validate": true },

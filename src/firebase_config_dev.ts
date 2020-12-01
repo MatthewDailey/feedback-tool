@@ -6,5 +6,6 @@ export const firebaseConfig = {
   storageBucket: "feedback-tool-dev.appspot.com",
   messagingSenderId: "754435069259",
   appId: "1:754435069259:web:6573a6f04a862bc30204ce",
-  measurementId: "G-RDF72MHCRT"
+  measurementId: "G-RDF72MHCRT",
+  onAuthStateChanged: () => {},
 };

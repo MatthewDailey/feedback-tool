@@ -13,10 +13,8 @@ import {
   BrowserRouter,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
-
-const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider()
+import { Header } from "./header"
 
 type Content = string
 
@@ -42,31 +40,20 @@ const rrfProps = {
   // createFirestoreInstance // <- needed if using firestore
 }
 
-const LoginButton = () => {
-  const firebase = useFirebase()
-  return <button onClick={() => firebase.login({ provider: 'google', type: 'popup' })}>Log In</button>
-}
-const LogoutButton = () => {
-  const firebase = useFirebase()
-  return <button onClick={() => firebase.logout()}>Log out</button>
-}
+// @ts-ignore
+window.store = store
 
 const AppView = () => {
-  const profile = useSelector(state => state.firebase.auth)
 
   return (
     <div>
-      <p>{`${message} ${JSON.stringify(profile)}`}</p>
-      <LoginButton />
-      <br/>
-      <LogoutButton />
     </div>
   )
 }
 
 const Router = () => (
   <BrowserRouter>
-    <h1>hi</h1>
+    <Header />
     <Switch>
       <Route path="/1">
         <h2>1</h2>
