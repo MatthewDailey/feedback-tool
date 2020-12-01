@@ -4,7 +4,7 @@ import {
   Link
 } from "react-router-dom";
 import { isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
-import { useUser } from "./auth"
+import { Contact, useUser } from "./auth"
 
 
 export const ManagerHome = () => {
@@ -49,22 +49,47 @@ const AddContact = () => {
   )
 }
 
+const Checkbox = (props: {key: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void }) => {
+  const label = `${props.contact.name} (${props.contact.email})`
+  return (
+    <div>
+      <input type="checkbox" onChange={(e) => props.onChanged(e.target.value)}/>
+      <span>{label}</span>
+    </div>
+  )
+}
+
 export const NewSession = () => {
   const user = useUser()
+  const [contactKeyToChecked, setContactKeyToChecked] = React.useState({})
 
   if (!user) {
     return null
   }
 
+  const contactIds = Object.keys(user.contacts)
+    .sort((a, b) => user.contacts[a].name.localeCompare(user.contacts[b].name))
+
+  const onCheckboxChangeProvider = (key: string) => (checked: boolean) => {
+    setContactKeyToChecked({...contactKeyToChecked, key: checked})
+  }
+
   return (
     <div>
       <p>Session Name</p>
-      <img src={user.avatarUrl} />
       <input type="text" />
 
       <p>Participants</p>
-      <input type="checkbox"/>
-      <input type="checkbox"/>
+      {contactIds.map(id => {
+        return (
+          <Checkbox
+            key={id}
+            isChecked={contactKeyToChecked[id]}
+            contact={user.contacts[id]}
+            onChanged={onCheckboxChangeProvider(id)}
+          />
+        )
+      })}
 
       <AddContact />
 
