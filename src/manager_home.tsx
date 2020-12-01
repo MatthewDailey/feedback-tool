@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux'
 import {
   Link
 } from "react-router-dom";
-import { isLoaded, useFirebaseConnect } from "react-redux-firebase"
+import { isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
+import { useUser } from "./auth"
 
 
 export const ManagerHome = () => {
@@ -15,16 +16,45 @@ export const ManagerHome = () => {
   )
 }
 
+
+
+const AddContact = () => {
+  const firebase = useFirebase()
+  const user = useUser()
+  const [name, setName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+
+  if (!user) { return null }
+
+  const addContact = () => {
+    if (name && email) {
+      firebase.push(`users/${user.uid}/contacts`, { name, email })
+        .then(() => {
+          setName('')
+          setEmail('')
+        })
+        .catch((e) => console.error('Failed to add contact', e))
+    }
+  }
+
+  return (
+    <div>
+      <p>Add contact</p>
+      <p>name</p>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+      <p>email</p>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+      <button onClick={addContact}>Add contact</button>
+    </div>
+  )
+}
+
 export const NewSession = () => {
-  const profile = useSelector(state => state.firebase.auth)
-  useFirebaseConnect([
-    { path: `users/${profile.uid}` }
-  ])
-  const users = useSelector(state => state.firebase.data.users)
-  if (!isLoaded(users)) {
+  const user = useUser()
+
+  if (!user) {
     return null
   }
-  const user = users[profile.uid]
 
   return (
     <div>
@@ -36,12 +66,7 @@ export const NewSession = () => {
       <input type="checkbox"/>
       <input type="checkbox"/>
 
-      <p>Add contact</p>
-      <p>name</p>
-      <input type="text" />
-      <p>email</p>
-      <input type="email" />
-      <button>Add contact</button>
+      <AddContact />
 
       <button>Create Session</button>
     </div>

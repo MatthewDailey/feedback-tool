@@ -1,5 +1,18 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { isLoaded, useFirebaseConnect } from "react-redux-firebase"
+
+export const useUser = () => {
+  const profile = useSelector(state => state.firebase.auth)
+  useFirebaseConnect([
+    { path: `users/${profile.uid}` }
+  ])
+  const users = useSelector(state => state.firebase.data.users)
+  if (!isLoaded(users)) {
+    return null
+  }
+  return { uid: profile.uid, ...users[profile.uid] }
+}
 
 export const ShowIfSignedIn = (props: { signedIn: React.ReactNode, signedOut: React.ReactNode }) => {
   const profile = useSelector(state => state.firebase.auth)
@@ -14,3 +27,4 @@ export const ShowIfSignedIn = (props: { signedIn: React.ReactNode, signedOut: Re
 
   return props.signedIn
 }
+
