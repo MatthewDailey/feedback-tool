@@ -1,0 +1,43 @@
+{
+  "rules": {
+    "users" : {
+      "$id" : {
+        ".read": "auth != null && $id === auth.uid",
+        ".write": "auth != null && $id === auth.uid",
+
+        "contacts": { ".validate": true },
+        "feedbackSessions": { ".validate": true },
+
+        "$other": { ".validate": false }
+      }
+    },
+
+    "feedbackSessions": {
+      "$id": {
+        ".read": "auth != null && data.child('ownerId').val() === auth.uid",
+        ".write": "auth != null && data.child('ownerId').val() === auth.uid",
+
+        "ownerId": { ".validate": true },
+        "status": { ".validate": true },
+        "feedbackSessionRequests": { ".validate": true },
+
+        "$other": { ".validate": false }
+      }
+    },
+
+    "feedbackSessionRequests": {
+      "$id": {
+        ".read": "true",
+        ".write": "auth != null && root.child('feedbackSessions').child(data.child('sessionId').val()).child('ownerId') === auth.uid",
+
+        "sessionId": { ".validate": true },
+        "responseId": { ".validate": true },
+        "requestEmail": { ".validate": true },
+        "sessionEmails": { ".validate": true },
+        "responseEmails": { ".validate": true, ".write": "true" },
+
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
