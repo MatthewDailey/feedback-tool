@@ -18,6 +18,8 @@ const AppView = () => {
   )
 }
 
+// TODO: See useParams() for providing a feedback session id to a view https://reactrouter.com/web/guides/quick-start
+
 const Router = () => (
   <BrowserRouter>
     <Header />
