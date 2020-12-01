@@ -9,6 +9,12 @@ import {
   firebaseReducer,
   useFirebase
 } from 'react-redux-firebase'
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider()
 
@@ -58,10 +64,27 @@ const AppView = () => {
   )
 }
 
+const Router = () => (
+  <BrowserRouter>
+    <h1>hi</h1>
+    <Switch>
+      <Route path="/1">
+        <h2>1</h2>
+      </Route>
+      <Route path="/2">
+        <h2>2</h2>
+      </Route>
+      <Route path="/">
+        <AppView />
+      </Route>
+    </Switch>
+  </BrowserRouter>
+)
+
 const App = () => (
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
-      <AppView />
+      <Router />
     </ReactReduxFirebaseProvider>
   </Provider>
 )
