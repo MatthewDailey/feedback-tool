@@ -9,6 +9,8 @@ import {
   Route,
 } from "react-router-dom";
 import { Header } from "./header"
+import { ManagerHome, NewSession } from "./manager_home"
+import { ShowIfSignedIn } from "./auth"
 
 const AppView = () => {
 
@@ -23,15 +25,16 @@ const AppView = () => {
 const Router = () => (
   <BrowserRouter>
     <Header />
+
     <Switch>
-      <Route path="/1">
-        <h2>1</h2>
+      <Route path="/new-session">
+        <ShowIfSignedIn signedIn={<NewSession />} signedOut={() => null} />
       </Route>
       <Route path="/2">
         <h2>2</h2>
       </Route>
       <Route path="/">
-        <AppView />
+        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={() => null} />
       </Route>
     </Switch>
   </BrowserRouter>
