@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import {
   Link
 } from "react-router-dom";
-import { isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
-import { Contact, useUser } from "./auth"
+import { ExtendedFirebaseInstance, isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
+import { Contact, User, useUser } from "./auth"
 
 
 export const ManagerHome = () => {
@@ -16,7 +16,33 @@ export const ManagerHome = () => {
   )
 }
 
+const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
+  // TODO validate fields
 
+  // push feedbackSession
+  const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened'})
+  const sessionId = sessionPushResult.key
+  console.log(sessionId)
+
+  // push feedbackSessionRequests
+  const feedbackSessionRequestsPromise = participants.map(contact =>
+    firebase.push('feedbackSessionRequests', {
+      sessionId,
+      sessionName,
+      sessionOwnerName: owner.displayName,
+      sessionOwnerEmail: owner.email,
+      requesteeName: contact.name,
+      requesteeEmail: contact.email,
+      participants,
+      responseEmails: []
+    }))
+  const requestPushResults = await Promise.all(feedbackSessionRequestsPromise)
+
+  // Update session with list of requests
+  const updateResults = await firebase.update(`feedbackSessions/${sessionId}`, { feedbackSessionRequests: requestPushResults.map(r => r.key)})
+
+  // go to session page
+}
 
 const AddContact = () => {
   const firebase = useFirebase()
@@ -60,8 +86,9 @@ const Checkbox = (props: {key: string, isChecked: boolean, contact: Contact, onC
 }
 
 export const NewSession = () => {
+  const firebase = useFirebase()
   const user = useUser()
-  const [contactKeyToChecked, setContactKeyToChecked] = React.useState({})
+  const [contactIdToChecked, setContactIdToChecked] = React.useState({})
   const [sessionName, setSessionName] = React.useState('')
 
   if (!user) {
@@ -71,7 +98,17 @@ export const NewSession = () => {
   const contactIds = Object.keys(user.contacts)
     .sort((a, b) => user.contacts[a].name.localeCompare(user.contacts[b].name))
   const onCheckboxChangeProvider = (key: string) => (checked: boolean) => {
-    setContactKeyToChecked({...contactKeyToChecked, key: checked})
+    setContactIdToChecked({...contactIdToChecked, [key]: checked})
+  }
+
+  const createSession = () => {
+    // TODO: introduce loading state while creating session
+
+    const participants = Object.keys(user.contacts)
+      .filter(id => contactIdToChecked[id])
+      .map(id => user.contacts[id])
+    createNewSession(firebase, user, sessionName, participants)
+      .catch(e => `Failed to create new session ${e}`)
   }
 
   return (
@@ -84,7 +121,7 @@ export const NewSession = () => {
         return (
           <Checkbox
             key={id}
-            isChecked={contactKeyToChecked[id]}
+            isChecked={contactIdToChecked[id]}
             contact={user.contacts[id]}
             onChanged={onCheckboxChangeProvider(id)}
           />
@@ -93,7 +130,7 @@ export const NewSession = () => {
 
       <AddContact />
 
-      <button>Create Session</button>
+      <button onClick={createSession}>Create Session</button>
     </div>
   )
 }

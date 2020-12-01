@@ -6,6 +6,8 @@ export type Contact = { name: string, email: string }
 
 export type User = {
   uid: string
+  displayName: string
+  email: string
   contacts: { [key: string]: Contact }
 }
 
