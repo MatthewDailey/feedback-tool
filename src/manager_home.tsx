@@ -62,6 +62,7 @@ const Checkbox = (props: {key: string, isChecked: boolean, contact: Contact, onC
 export const NewSession = () => {
   const user = useUser()
   const [contactKeyToChecked, setContactKeyToChecked] = React.useState({})
+  const [sessionName, setSessionName] = React.useState('')
 
   if (!user) {
     return null
@@ -69,7 +70,6 @@ export const NewSession = () => {
 
   const contactIds = Object.keys(user.contacts)
     .sort((a, b) => user.contacts[a].name.localeCompare(user.contacts[b].name))
-
   const onCheckboxChangeProvider = (key: string) => (checked: boolean) => {
     setContactKeyToChecked({...contactKeyToChecked, key: checked})
   }
@@ -77,7 +77,7 @@ export const NewSession = () => {
   return (
     <div>
       <p>Session Name</p>
-      <input type="text" />
+      <input type="text" value={sessionName} onChange={(e) => setSessionName(e.target.value)} />
 
       <p>Participants</p>
       {contactIds.map(id => {

@@ -17,6 +17,7 @@
 
         "ownerId": { ".validate": true },
         "status": { ".validate": true },
+        "name": {".validate": true },
         "feedbackSessionRequests": { ".validate": true },
 
         "$other": { ".validate": false }
@@ -29,6 +30,7 @@
         ".write": "auth != null && root.child('feedbackSessions').child(data.child('sessionId').val()).child('ownerId').val() === auth.uid",
 
         "sessionId": { ".validate": true },
+        "sessionName": { ".validate": true},
         "responseId": { ".validate": true },
         "requestEmail": { ".validate": true },
         "sessionEmails": { ".validate": true },
