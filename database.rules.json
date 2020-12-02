@@ -5,8 +5,33 @@
         ".read": "auth != null && $id === auth.uid",
         ".write": "auth != null && $id === auth.uid",
 
-        "contacts": { ".validate": true },
-        "feedbackSessions": { ".validate": true }
+        "contacts": {
+          ".validate": "newData.hasChildren()",
+          "$id": {
+            "name": { ".validate": "newData.isString()"},
+            "email": { ".validate": "newData.isString()"},
+            "$other": { ".validate": false }
+          }
+        },
+        "feedbackSessions": {
+          ".validate": "newData.hasChildren()",
+          "$index": { ".validate": "newData.isString()"}
+        },
+
+        "avatarUrl": { ".validate": "newData.isString()" },
+        "displayName": { ".validate": "newData.isString()" },
+        "email": { ".validate": "newData.isString()" },
+        "providerData": {
+          "0": {
+            "displayName": { ".validate": "newData.isString()" },
+            "email": { ".validate": "newData.isString()" },
+            "uid": { ".validate": "newData.isString()" },
+            "photoURL": { ".validate": "newData.isString()" },
+            "providerId": { ".validate": "newData.val() === 'google.com'"}
+          }
+        },
+
+        "$other": { ".validate":  false }
       }
     },
 
@@ -15,10 +40,13 @@
         ".read": "auth != null && data.child('ownerId').val() === auth.uid",
         ".write": "auth != null && ((data.exists() && data.child('ownerId').val() === auth.uid) || (!data.exists() && newData.child('ownerId').val() === auth.uid))",
 
-        "ownerId": { ".validate": true },
-        "status": { ".validate": true },
-        "name": {".validate": true },
-        "feedbackSessionRequests": { ".validate": true },
+        "ownerId": { ".validate": "newData.val() === auth.uid" },
+        "status": { ".validate": "newData.val() === 'opened' || newData.val() === 'finalized'" },
+        "name": {".validate": "newData.isString()" },
+        "feedbackSessionRequests": {
+          ".validate": "newData.hasChildren()",
+          "$index": { ".validate": "newData.isString()"}
+        },
 
         "$other": { ".validate": false }
       }
@@ -29,17 +57,45 @@
         ".read": "true",
         ".write": "auth != null && root.child('feedbackSessions').child(newData.child('sessionId').val()).child('ownerId').val() === auth.uid",
 
-        "sessionId": { ".validate": true },
-        "sessionName": { ".validate": true },
-        "sessionOwnerName": { ".validate":  true },
-        "sessionOwnerEmail": { ".validate":  true },
-        "requesteeName": { ".validate": true },
-        "requesteeEmail": { ".validate": true },
+        "sessionId": { ".validate": "newData.isString()" },
+        "sessionName": { ".validate": "newData.isString()" },
+        "sessionOwnerName": { ".validate": "newData.isString()" },
+        "sessionOwnerEmail": { ".validate": "newData.isString()" },
+        "requesteeName": { ".validate": "newData.isString()" },
+        "requesteeEmail": { ".validate": "newData.isString()" },
 
-        "participants": { ".validate": true },
-        "requestedPairs": { ".validate": true, ".write": "true" },
-        "finalizedPairs": { ".validate": true },
-        "finalized": { ".validate": true },
+        "participants": {
+          ".validate": "newData.hasChildren()",
+          "$index": {
+            "name": { ".validate": "newData.isString()"},
+            "email": { ".validate": "newData.isString()"},
+            "$other": { ".validate": false }
+          }
+        },
+
+        "requestedPairs": {
+          ".write": "data.child('requested').val() !== true && data.child('finalized').val() !== true",
+          ".validate": "newData.hasChildren()",
+          "$id": {
+            "name": { ".validate": "newData.isString()"},
+            "email": { ".validate": "newData.isString()"},
+            "$other": { ".validate": false }
+          }
+        },
+        "requested": {
+          ".write": "data.val() !== true",
+          ".validate": "newData.val() === true"
+        },
+
+        "finalizedPairs": {
+          ".validate": "newData.hasChildren()",
+          "$id": {
+            "name": { ".validate": "newData.isString()"},
+            "email": { ".validate": "newData.isString()"},
+            "$other": { ".validate": false }
+          }
+        },
+        "finalized": { ".validate": "newData.isBoolean()" },
 
         "$other": { ".validate": false }
       }

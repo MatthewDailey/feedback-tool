@@ -88,9 +88,10 @@ export const NewSession = () => {
   if (!user) {
     return null
   }
+  const contacts: {[key: string]: Contact|undefined} = user.contacts || {}
 
-  const contactIds = Object.keys(user.contacts)
-    .sort((a, b) => user.contacts[a].name.localeCompare(user.contacts[b].name))
+  const contactIds = Object.keys(contacts)
+    .sort((a, b) => contacts[a].name.localeCompare(contacts[b].name))
   const onCheckboxChangeProvider = (key: string) => (checked: boolean) => {
     setContactIdToChecked({...contactIdToChecked, [key]: checked})
   }
@@ -98,9 +99,9 @@ export const NewSession = () => {
   const createSession = () => {
     // TODO: introduce loading state while creating session
 
-    const participants = Object.keys(user.contacts)
+    const participants = Object.keys(contacts)
       .filter(id => contactIdToChecked[id])
-      .map(id => user.contacts[id])
+      .map(id => contacts[id])
     createNewSession(firebase, user, sessionName, participants)
       .then(sessionId => history.push(`/session/${sessionId}`))
       .catch(e => `Failed to create new session ${e}`)
@@ -117,7 +118,7 @@ export const NewSession = () => {
           <ContactCheckbox
             key={id}
             isChecked={contactIdToChecked[id]}
-            contact={user.contacts[id]}
+            contact={contacts[id]}
             onChanged={onCheckboxChangeProvider(id)}
           />
         )

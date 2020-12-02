@@ -27,7 +27,7 @@ export const Participant = () => {
     const requestedPairs = feedbackSessionRequest.value.participants
       .filter(contact => emailToChecked[contact.email])
 
-    firebase.update(`feedbackSessionRequests/${feedbackSessionRequestId}`, { requestedPairs })
+    firebase.update(`feedbackSessionRequests/${feedbackSessionRequestId}`, { requestedPairs, requested: true })
   }
 
   return (
