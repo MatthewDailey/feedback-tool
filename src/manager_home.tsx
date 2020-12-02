@@ -7,8 +7,8 @@ import {
 import { ExtendedFirebaseInstance, isEmpty, isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
 import { Contact, User, useUser } from "./auth"
 import { ContactCheckbox } from "./contact_checkbox"
-import { Load } from "./models"
-import { useFeedbackSessionRequest } from "./data"
+import { FeedbackSession, FeedbackSessionRequest, Load } from "./models"
+import { useFeedbackSessionRequest, useSession } from "./data"
 
 
 export const ManagerHome = () => {
@@ -129,29 +129,62 @@ export const NewSession = () => {
   )
 }
 
-type FeedbackSession = {
-  name: string,
-  ownerId: string,
-  status: 'opened'|'finalized'
-  feedbackSessionRequests: string[]
+const finalizeSession = async (firebase: ExtendedFirebaseInstance,
+                               feedbackSession: FeedbackSession,
+                               feedbackSessionRequests: FeedbackSessionRequest[]) => {
+  const emailToPairings: { [email:string]: Contact[]|undefined } = {}
+
+  // Add requested pairings from others
+  feedbackSessionRequests.forEach(request => {
+    (request.requestedPairs || []).forEach(possiblePair => {
+      const pairList = emailToPairings[possiblePair.email] || []
+      pairList.push({ email: request.requesteeEmail, name: request.requesteeName })
+    })
+  })
+  // Remove non-matched pairings with self
+  feedbackSessionRequests.forEach(request => {
+    const inboundRequests = emailToPairings[request.requesteeEmail] || []
+    const finalPairs = []
+    inboundRequests.forEach(requestedPair => {
+      if ((request.requestedPairs || []).some(contact => contact.email === requestedPair.email)) {
+        finalPairs.push(requestedPair)
+      }
+    })
+    emailToPairings[request.requesteeEmail] = finalPairs
+  })
+  console.log(emailToPairings)
+
+  // update requests with finalize pairings
+  await Promise.all(feedbackSessionRequests
+    .map(request => firebase.update(`feedbackSessionRequests/${request.id}`,
+      {
+        finalizedPairs: emailToPairings[request.requesteeEmail],
+        finalized: true,
+      })))
+
+  await firebase.update(`feedbackSessions/${feedbackSession.id}`, { status: 'finalized' })
 }
 
-export const useSession = (id: string): Load<FeedbackSession> => {
-  useFirebaseConnect([
-    { path: `feedbackSessions/${id}` }
-  ])
-  const sessions = useSelector(state => state.firebase.data.feedbackSessions)
-  if (!isLoaded(sessions)) {
-    return { loaded: false }
+const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {
+  const firebase = useFirebase()
+  // const session = useSelector(state => state.firebase.data.feedbackSessions && state.firebase.data.feedbackSessions[props.sessionId])
+  // const requests = props.requestIds.map(id => useSelector(state => state.firebase.data.feedbackSessionRequests && state.firebase.data.feedbackSessionRequests[id]))
+  const session = useSession(props.sessionId)
+  const requests = props.requestIds.map(id => useFeedbackSessionRequest(id))
+  if (!session.loaded || session.value === null || requests.some(request => !request.loaded || request.value == null)) {
+    return null
   }
-  if (isEmpty(sessions[id])) {
-    return { loaded: true, value: null }
+  const requestValues: FeedbackSessionRequest[] = []
+  for (let r of requests) {
+    if (r.loaded && r.value !== null) {
+      requestValues.push(r.value)
+    }
   }
-  return { loaded: true, value: sessions[id] }
+  return <button onClick={() => finalizeSession(firebase, session.value, requestValues)}>Finalize Session</button>
 }
 
 // Note: broke this out from ExistingSession to avoid additional hooks on render.
-const RequestsList = (props: { requestIds: string[] }) => {
+const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: string[] }) => {
   const requests = props.requestIds.map((id) => useFeedbackSessionRequest(id))
   return (
     <div>
@@ -172,7 +205,6 @@ const RequestsList = (props: { requestIds: string[] }) => {
   )
 }
 
-
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
@@ -181,16 +213,11 @@ export const ExistingSession = () => {
     return null
   }
 
-  const finalizeSession = () => {
-    // update requests with finalize pairings
-    // update status
-  }
-
   return (
     <div>
       <div>{JSON.stringify(session.value)}</div>
-      <RequestsList requestIds={session.value.feedbackSessionRequests} />
-      <button onClick={finalizeSession}>Finalize Session</button>
+      <RequestsList requestIds={session.value.feedbackSessionRequests} feedbackSession={session.value} />
+      <FinalizeButton sessionId={session.value.id} requestIds={session.value.feedbackSessionRequests} />
     </div>
   )
 }

@@ -39,6 +39,7 @@
         "participants": { ".validate": true },
         "requestedPairs": { ".validate": true, ".write": "true" },
         "finalizedPairs": { ".validate": true },
+        "finalized": { ".validate": true },
 
         "$other": { ".validate": false }
       }
