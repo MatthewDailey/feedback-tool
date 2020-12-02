@@ -37,7 +37,7 @@
         "requesteeEmail": { ".validate": true },
 
         "participants": { ".validate": true },
-        "responseEmails": { ".validate": true, ".write": "true" },
+        "requestedPairs": { ".validate": true, ".write": "true" },
 
         "$other": { ".validate": false }
       }

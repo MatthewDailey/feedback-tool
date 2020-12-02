@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { isEmpty, isLoaded, useFirebaseConnect } from "react-redux-firebase"
+import { isEmpty, isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
 import { Contact } from "./auth"
 import { ContactCheckbox } from "./contact_checkbox"
 
@@ -13,7 +13,7 @@ type FeedbackSessionRequest = {
   requesteeName: string,
   requesteeEmail: string,
   participants: Contact[],
-  responseEmails: string[],
+  requestedPairs?: Contact[],
 }
 type FeedbackSessionRequestLoad = { loaded: false } | { loaded: true, request: null|FeedbackSessionRequest}
 
@@ -34,6 +34,7 @@ const useFeedbackSessionRequest = (id: string) : FeedbackSessionRequestLoad => {
 export const Participant = () => {
   const [emailToChecked, setEmailToChecked] = React.useState({})
   const { feedbackSessionRequestId }  = useParams()
+  const firebase = useFirebase()
   const feedbackSessionRequest = useFeedbackSessionRequest(feedbackSessionRequestId)
 
   if (!feedbackSessionRequest.loaded || feedbackSessionRequest.request === null) {
@@ -41,7 +42,14 @@ export const Participant = () => {
   }
 
   const setEmailCheckedProvider = (email: string) => (checked: boolean) => {
-    setEmailToChecked({...emailToChecked, email: checked})
+    setEmailToChecked({...emailToChecked, [email]: checked})
+  }
+
+  const setResponseEmails = () => {
+    const requestedPairs = feedbackSessionRequest.request.participants
+      .filter(contact => emailToChecked[contact.email])
+
+    firebase.update(`feedbackSessionRequests/${feedbackSessionRequestId}`, { requestedPairs })
   }
 
   return (
@@ -58,7 +66,7 @@ export const Participant = () => {
             />
           ))
         }
-        <button>Submit</button>
+        <button onClick={setResponseEmails}>Submit</button>
       </div>
     </div>
   )
