@@ -11,6 +11,7 @@ import {
 import { Header } from "./header"
 import { ManagerHome, NewSession } from "./manager_home"
 import { ShowIfSignedIn } from "./auth"
+import { Participant } from "./participant"
 
 const AppView = () => {
 
@@ -30,8 +31,8 @@ const Router = () => (
       <Route path="/new-session">
         <ShowIfSignedIn signedIn={<NewSession />} signedOut={() => null} />
       </Route>
-      <Route path="/2">
-        <h2>2</h2>
+      <Route path="/participant/:feedbackSessionRequestId">
+        <Participant />
       </Route>
       <Route path="/">
         <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={() => null} />
