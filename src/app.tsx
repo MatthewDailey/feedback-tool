@@ -9,7 +9,7 @@ import {
   Route,
 } from "react-router-dom";
 import { Header } from "./header"
-import { ManagerHome, NewSession } from "./manager_home"
+import { ManagerHome, NewSession, ExistingSession } from "./manager_home"
 import { ShowIfSignedIn } from "./auth"
 import { Participant } from "./participant"
 
@@ -29,13 +29,16 @@ const Router = () => (
 
     <Switch>
       <Route path="/new-session">
-        <ShowIfSignedIn signedIn={<NewSession />} signedOut={() => null} />
+        <ShowIfSignedIn signedIn={<NewSession />} signedOut={null} />
       </Route>
       <Route path="/participant/:feedbackSessionRequestId">
         <Participant />
       </Route>
+      <Route path="/session/:sessionId">
+        <ShowIfSignedIn signedIn={<ExistingSession />} signedOut={null} />
+      </Route>
       <Route path="/">
-        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={() => null} />
+        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={null} />
       </Route>
     </Switch>
   </BrowserRouter>
