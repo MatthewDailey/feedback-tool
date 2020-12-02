@@ -19,3 +19,13 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 
   response.send("Hello from Firebase!");
 });
+
+export const notifyParticipantSessionOpened = functions.database.ref('/feedbackSessionRequests/{id}')
+  .onCreate(((snapshot, context) => {
+    functions.logger.debug("Create received.", snapshot.val())
+  }))
+
+export const notifyParticipantSessionFinalized = functions.database.ref('/feedbackSessionRequests/{id}')
+  .onUpdate(((snapshot, context) => {
+    functions.logger.debug("Update received.", snapshot.before.val(), snapshot.after.val())
+  }))
