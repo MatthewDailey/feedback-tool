@@ -3,3 +3,4 @@ ui-debug.log
 .idea
 public/app.js
 *-debug.log
+.firebase
