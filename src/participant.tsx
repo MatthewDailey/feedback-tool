@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { isEmpty, isLoaded, useFirebaseConnect } from "react-redux-firebase"
 import { Contact } from "./auth"
+import { ContactCheckbox } from "./contact_checkbox"
 
 type FeedbackSessionRequest = {
   sessionId: string,
@@ -31,8 +32,34 @@ const useFeedbackSessionRequest = (id: string) : FeedbackSessionRequestLoad => {
 }
 
 export const Participant = () => {
+  const [emailToChecked, setEmailToChecked] = React.useState({})
   const { feedbackSessionRequestId }  = useParams()
   const feedbackSessionRequest = useFeedbackSessionRequest(feedbackSessionRequestId)
 
-  return <div>{"request id: " + JSON.stringify(feedbackSessionRequest)}</div>
+  if (!feedbackSessionRequest.loaded || feedbackSessionRequest.request === null) {
+    return null
+  }
+
+  const setEmailCheckedProvider = (email: string) => (checked: boolean) => {
+    setEmailToChecked({...emailToChecked, email: checked})
+  }
+
+  return (
+    <div>
+      <div>{"request id: " + JSON.stringify(feedbackSessionRequest)}</div>
+      <div>
+        {
+          feedbackSessionRequest.request.participants.map((contact) => (
+            <ContactCheckbox
+              key={contact.email}
+              isChecked={emailToChecked[contact.email]}
+              contact={contact}
+              onChanged={setEmailCheckedProvider(contact.email)}
+            />
+          ))
+        }
+        <button>Submit</button>
+      </div>
+    </div>
+  )
 }

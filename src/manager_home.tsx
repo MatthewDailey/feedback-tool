@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import { ExtendedFirebaseInstance, isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
 import { Contact, User, useUser } from "./auth"
+import { ContactCheckbox } from "./contact_checkbox"
 
 
 export const ManagerHome = () => {
@@ -74,16 +75,6 @@ const AddContact = () => {
   )
 }
 
-const Checkbox = (props: {key: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void }) => {
-  const label = `${props.contact.name} (${props.contact.email})`
-  return (
-    <div>
-      <input type="checkbox" onChange={(e) => props.onChanged(e.target.value)}/>
-      <span>{label}</span>
-    </div>
-  )
-}
-
 export const NewSession = () => {
   const firebase = useFirebase()
   const user = useUser()
@@ -118,7 +109,7 @@ export const NewSession = () => {
       <p>Participants</p>
       {contactIds.map(id => {
         return (
-          <Checkbox
+          <ContactCheckbox
             key={id}
             isChecked={contactIdToChecked[id]}
             contact={user.contacts[id]}
