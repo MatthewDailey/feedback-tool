@@ -141,6 +141,7 @@ const finalizeSession = async (firebase: ExtendedFirebaseInstance,
     (request.requestedPairs || []).forEach(possiblePair => {
       const pairList = emailToPairings[possiblePair.email] || []
       pairList.push({ email: request.requesteeEmail, name: request.requesteeName })
+      emailToPairings[possiblePair.email] = pairList
     })
   })
   // Remove non-matched pairings with self
@@ -154,7 +155,6 @@ const finalizeSession = async (firebase: ExtendedFirebaseInstance,
     })
     emailToPairings[request.requesteeEmail] = finalPairs
   })
-  console.log(emailToPairings)
 
   // update requests with finalize pairings
   await Promise.all(feedbackSessionRequests
