@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import {
   Link
 } from "react-router-dom";
@@ -45,7 +44,7 @@ const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User,
   // Update session with list of requests
   const updateResults = await firebase.update(`feedbackSessions/${sessionId}`, { feedbackSessionRequests: requestPushResults.map(r => r.key)})
 
-  // go to session page
+  return sessionId
 }
 
 const AddContact = () => {
@@ -81,6 +80,7 @@ const AddContact = () => {
 
 export const NewSession = () => {
   const firebase = useFirebase()
+  const history = useHistory()
   const user = useUser()
   const [contactIdToChecked, setContactIdToChecked] = React.useState({})
   const [sessionName, setSessionName] = React.useState('')
@@ -102,6 +102,7 @@ export const NewSession = () => {
       .filter(id => contactIdToChecked[id])
       .map(id => user.contacts[id])
     createNewSession(firebase, user, sessionName, participants)
+      .then(sessionId => history.push(`/session/${sessionId}`))
       .catch(e => `Failed to create new session ${e}`)
   }
 
