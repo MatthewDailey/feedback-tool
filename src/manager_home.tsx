@@ -20,10 +20,9 @@ export const ManagerHome = () => {
 }
 
 const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
-  // TODO validate fields
-
+  const createdAt: number = Date.now()
   // push feedbackSession
-  const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened'})
+  const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened', createdAt })
   const sessionId = sessionPushResult.key
   console.log(sessionId)
 
@@ -34,6 +33,7 @@ const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User,
       sessionName,
       sessionOwnerName: owner.displayName,
       sessionOwnerEmail: owner.email,
+      sessionCreatedAt: createdAt,
       requesteeName: contact.name,
       requesteeEmail: contact.email,
       participants,
@@ -135,6 +135,7 @@ const finalizeSession = async (firebase: ExtendedFirebaseInstance,
                                feedbackSession: FeedbackSession,
                                feedbackSessionRequests: FeedbackSessionRequest[]) => {
   const emailToPairings: { [email:string]: Contact[]|undefined } = {}
+  const finalizedAt: number = Date.now()
 
   // Add requested pairings from others
   feedbackSessionRequests.forEach(request => {
@@ -161,10 +162,10 @@ const finalizeSession = async (firebase: ExtendedFirebaseInstance,
     .map(request => firebase.update(`feedbackSessionRequests/${request.id}`,
       {
         finalizedPairs: emailToPairings[request.requesteeEmail],
-        finalized: true,
+        finalizedAt
       })))
 
-  await firebase.update(`feedbackSessions/${feedbackSession.id}`, { status: 'finalized' })
+  await firebase.update(`feedbackSessions/${feedbackSession.id}`, { status: 'finalized', finalizedAt })
 }
 
 const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {

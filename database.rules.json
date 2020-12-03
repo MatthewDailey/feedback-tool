@@ -42,6 +42,8 @@
 
         "ownerId": { ".validate": "newData.val() === auth.uid" },
         "status": { ".validate": "newData.val() === 'opened' || newData.val() === 'finalized'" },
+        "createdAt": { ".validate":  "newData.isNumber()" },
+        "finalizedAt": { ".validate":  "newData.isNumber()" },
         "name": {".validate": "newData.isString()" },
         "feedbackSessionRequests": {
           ".validate": "newData.hasChildren()",
@@ -61,6 +63,7 @@
         "sessionName": { ".validate": "newData.isString()" },
         "sessionOwnerName": { ".validate": "newData.isString()" },
         "sessionOwnerEmail": { ".validate": "newData.isString()" },
+        "sessionCreatedAt": { ".validate":  "newData.isNumber()" },
         "requesteeName": { ".validate": "newData.isString()" },
         "requesteeEmail": { ".validate": "newData.isString()" },
 
@@ -95,7 +98,7 @@
             "$other": { ".validate": false }
           }
         },
-        "finalized": { ".validate": "newData.isBoolean()" },
+        "finalizedAt": { ".validate":  "newData.isNumber()" },
 
         "$other": { ".validate": false }
       }
