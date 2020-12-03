@@ -8,6 +8,8 @@
 
     --font-medium-weight: 400;
     --font-heavy-weight: 900;
+
+    --border-width: 2px;
 }
 
 * { margin: 0; }
@@ -25,6 +27,31 @@ a {
 a:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+button {
+    background-color: var(--color-seafoam);
+    border: var(--border-width) solid var(--color-seafoam);
+    color: var(--color-dark);
+}
+button:hover {
+    cursor: pointer;
+    border: var(--border-width) solid var(--color-dark);
+}
+button:active {
+    border: var(--border-width) solid var(--color-dark);
+    background-color: var(--color-dark);
+    color: var(--color-light)
+}
+button.large {
+    height: 36px;
+    padding-left: 22px;
+    padding-right: 22px;
+    border-radius: 8px;
+}
+button.small {
+    height: 20px;
+    border-radius: 4px;
 }
 
 .header {
@@ -54,4 +81,12 @@ a:hover {
     color: var(--color-dark)
 }
 
+.manager_home {
+    margin-left: 40px;
+}
 
+.manager_home > h1 {
+    font-size: 40px;
+    font-weight: var(--font-heavy-weight);
+    color: var(--color-dark)
+}

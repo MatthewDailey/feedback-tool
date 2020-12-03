@@ -8,13 +8,17 @@ import { Contact, User, useUser } from "./auth"
 import { ContactCheckbox } from "./contact_checkbox"
 import { FeedbackSession, FeedbackSessionRequest, Load } from "./models"
 import { useFeedbackSessionRequest, useSession } from "./data"
+import { Spacer } from "./spacer"
 
 
 export const ManagerHome = () => {
+  const history = useHistory()
   return (
-    <div>
-      <Link to="/new-session">Start a new Feedback Session 2</Link>
-      <h2>Feedback Sessions</h2>
+    <div className="manager_home">
+      <Spacer multiple={2} direction='y' />
+      <h1>Feedback Sessions</h1>
+      <Spacer multiple={2} direction='y' />
+      <button className="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</button>
     </div>
   )
 }
