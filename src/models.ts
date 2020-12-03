@@ -8,6 +8,8 @@ export type FeedbackSession = {
   name: string,
   ownerId: string,
   status: 'opened'|'finalized'
+  createdAt: number
+  finalizedAt: number
   feedbackSessionRequests: string[]
 }
 

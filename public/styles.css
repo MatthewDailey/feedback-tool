@@ -83,10 +83,36 @@ button.small {
 
 .manager_home {
     margin-left: 40px;
+    margin-right: 40px;
+    max-width: 800px;
 }
 
 .manager_home > h1 {
     font-size: 40px;
     font-weight: var(--font-heavy-weight);
-    color: var(--color-dark)
+    color: var(--color-dark);
+}
+
+.sessionOverview {
+    padding: 14px;
+    border: 2px solid transparent;
+    transform: translateX(-16px);
+}
+
+.sessionOverview:hover {
+    border: 2px solid var(--color-peach);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.sessionOverview > h2 {
+    font-size: 24px;
+    font-weight: var(--font-heavy-weight);
+    color: var(--color-dark);
+}
+
+.sessionOverview > h3 {
+    font-weight: var(--font-heavy-weight);
+    color: var(--color-dark);
+    opacity: 0.8;
 }
