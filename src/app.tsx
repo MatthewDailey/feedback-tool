@@ -9,24 +9,15 @@ import {
   Route,
 } from "react-router-dom";
 import { Header } from "./header"
-import { ManagerHome, NewSession, ExistingSession } from "./manager_home"
+import { ManagerHome } from "./manager_home"
 import { ShowIfSignedIn } from "./auth"
 import { Participant } from "./participant"
-
-const AppView = () => {
-
-  return (
-    <div>
-    </div>
-  )
-}
-
-// TODO: See useParams() for providing a feedback session id to a view https://reactrouter.com/web/guides/quick-start
+import { NewSession } from "./new_session"
+import { ExistingSession } from "./existing_session"
 
 const Router = () => (
   <BrowserRouter>
     <Header />
-
     <Switch>
       <Route path="/new-session">
         <ShowIfSignedIn signedIn={<NewSession />} signedOut={null} />
