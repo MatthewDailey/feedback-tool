@@ -8,7 +8,8 @@ export type User = {
   uid: string
   displayName: string
   email: string
-  contacts: { [key: string]: Contact }
+  contacts: { [key: string]: Contact },
+  feedbackSessions: { [sessionId: string]: number }
 }
 
 export const useUser = (): User => {

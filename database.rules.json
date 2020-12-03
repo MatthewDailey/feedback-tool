@@ -15,7 +15,7 @@
         },
         "feedbackSessions": {
           ".validate": "newData.hasChildren()",
-          "$index": { ".validate": "newData.isString()"}
+          "$sessionId": { ".validate": "newData.isNumber()"}
         },
 
         "avatarUrl": { ".validate": "newData.isString()" },

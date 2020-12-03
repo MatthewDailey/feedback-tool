@@ -11,14 +11,31 @@ import { useFeedbackSessionRequest, useSession } from "./data"
 import { Spacer } from "./spacer"
 
 
+const FeedbackSessionHighLevel = (props: { key: string, sessionId: string }) => {
+  const session = useSession(props.sessionId)
+
+  return (
+    <div>{JSON.stringify(session)}</div>
+  )
+}
+
 export const ManagerHome = () => {
   const history = useHistory()
+  const user = useUser()
+
+  let sessionIdsOrderedByCreatedAt = []
+  if (user && user.feedbackSessions) {
+    sessionIdsOrderedByCreatedAt = Object.keys(user.feedbackSessions)
+    sessionIdsOrderedByCreatedAt.sort((a, b) => user.feedbackSessions[b] - user.feedbackSessions[a])
+  }
+
   return (
     <div className="manager_home">
       <Spacer multiple={2} direction='y' />
       <h1>Feedback Sessions</h1>
       <Spacer multiple={2} direction='y' />
       <button className="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</button>
+      {sessionIdsOrderedByCreatedAt.map(id => <FeedbackSessionHighLevel sessionId={id} key={id} />)}
     </div>
   )
 }
@@ -28,7 +45,8 @@ const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User,
   // push feedbackSession
   const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened', createdAt })
   const sessionId = sessionPushResult.key
-  console.log(sessionId)
+
+  await firebase.set(`users/${owner.uid}/feedbackSessions/${sessionId}`, createdAt)
 
   // push feedbackSessionRequests
   const feedbackSessionRequestsPromise = participants.map(contact =>
