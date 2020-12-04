@@ -111,12 +111,15 @@ export const NewSession = () => {
       <Spacer multiple={1} direction="y" />
       {contactIds.map(id => {
         return (
-          <ContactCheckbox
-            key={id}
-            isChecked={contactIdToChecked[id]}
-            contact={contacts[id]}
-            onChanged={onCheckboxChangeProvider(id)}
-          />
+          <>
+            <ContactCheckbox
+              key={id}
+              isChecked={contactIdToChecked[id]}
+              contact={contacts[id]}
+              onChanged={onCheckboxChangeProvider(id)}
+            />
+            <Spacer multiple={1} direction="y" />
+          </>
         )
       })}
       <AddContact />

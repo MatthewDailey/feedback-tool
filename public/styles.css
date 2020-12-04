@@ -86,8 +86,14 @@ button:focus {
     padding: 4px 8px;
 }
 
-.TextInput > p {
+.TextInput > label {
     font-size: 8px;
+}
+
+.TextInput {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
 
 .header {
@@ -174,4 +180,17 @@ button:focus {
     font-size: 12px;
     font-weight: var(--font-heavy-weight);
     color: var(--color-dark)
+}
+
+.contactCheckbox {
+    display: flex;
+    flex-direction: row;
+}
+
+.contactCheckbox > input {
+    background-color: var(--color-teal);
+}
+
+.contactCheckbox > input:focus {
+    outline: none;
 }

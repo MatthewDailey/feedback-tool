@@ -8,10 +8,12 @@ export const TextInput = (props: {
   onChange: (val: string) => void,
   size: 'large'|'small'
 }) => {
+  const inputId = `${props.label}-input`
   return (
     <div className={`${props.size} TextInput`}>
-      {props.label && <p>{props.label}</p>}
+      {props.label && <label for={inputId}>{props.label}</label>}
       <input
+        id={inputId}
         type="text"
         value={props.value}
         placeholder={props.hint}
