@@ -4,6 +4,7 @@ import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { FeedbackSession, FeedbackSessionRequest } from "./models"
 import { Contact } from "./auth"
 import { useFeedbackSessionRequest, useSession } from "./data"
+import { Spacer } from "./spacer"
 
 
 const finalizeSession = async (firebase: ExtendedFirebaseInstance,
@@ -58,7 +59,14 @@ const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {
       requestValues.push(r.value)
     }
   }
-  return <button onClick={() => finalizeSession(firebase, session.value, requestValues)}>Finalize Session</button>
+  return <button className="large" onClick={() => finalizeSession(firebase, session.value, requestValues)}>Finalize Session</button>
+}
+
+const contactList = (contacts?: Contact[]) => {
+  if (!contacts) {
+    return "None."
+  }
+  return contacts.map((contact, index) => `${contact.name} (${contact.email})${index === contacts.length - 1 ? '' : ','}`)
 }
 
 // Note: broke this out from ExistingSession to avoid additional hooks on render.
@@ -72,9 +80,9 @@ const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: str
 
           return (
             <div key={request.value.requesteeEmail}>
-              <p>requester: {request.value.requesteeName}</p>
-              <p>requested pairs: {JSON.stringify(request.value.requestedPairs)}</p>
-              {request.value.finalizedPairs && <p>finalized pairs: {JSON.stringify(request.value.finalizedPairs)}</p>}
+              <p>{request.value.requesteeName} ({request.value.requesteeEmail})</p>
+              <p>Requested pairs: {contactList(request.value.requestedPairs)}</p>
+              {request.value.finalizedPairs && <p>finalized pairs: {contactList(request.value.finalizedPairs)}</p>}
             </div>
           )
         })
@@ -91,11 +99,24 @@ export const ExistingSession = () => {
     return null
   }
 
+  const requestIds = session.value.feedbackSessionRequests || []
+
   return (
-    <div>
-      <div>{JSON.stringify(session.value)}</div>
-      <RequestsList requestIds={session.value.feedbackSessionRequests} feedbackSession={session.value} />
-      <FinalizeButton sessionId={session.value.id} requestIds={session.value.feedbackSessionRequests} />
+    <div className="existingSession wrapper">
+      <Spacer multiple={2} direction='y' />
+      <h1>{session.value.name}</h1>
+      <Spacer multiple={1} direction="y" />
+      <p>{requestIds.length} participants.</p>
+      <Spacer multiple={1} direction="y" />
+      <p>Created at: {new Date(session.value.createdAt).toDateString()}</p>
+      <Spacer multiple={1} direction="y" />
+      <p>Finalized at: {session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : "Not yet."}</p>
+      <Spacer multiple={3} direction="y" />
+      <h3>Participants</h3>
+      <Spacer multiple={1} direction="y" />
+      <RequestsList requestIds={requestIds} feedbackSession={session.value} />
+      <Spacer multiple={3} direction="y" />
+      {!session.value.finalizedAt && <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />}
     </div>
   )
 }

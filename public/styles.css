@@ -20,6 +20,12 @@ body {
     font-size: 12px;
 }
 
+.wrapper {
+    max-width: 800px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 a {
     color: var(--color-teal)
 }
@@ -129,7 +135,6 @@ button:focus {
 .manager_home {
     margin-left: 40px;
     margin-right: 40px;
-    max-width: 800px;
 }
 
 .manager_home > h1 {
@@ -200,5 +205,9 @@ button:focus {
 
 .participant {
     margin-left: 40px;
+    color: var(--color-dark);
+}
+
+.existingSession {
     color: var(--color-dark);
 }

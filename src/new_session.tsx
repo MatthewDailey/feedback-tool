@@ -101,7 +101,7 @@ export const NewSession = () => {
   }
 
   return (
-    <div className="newSession">
+    <div className="newSession wrapper">
       <Spacer multiple={2} direction="y" />
       <h1>New Feedback Session</h1>
       <Spacer multiple={2} direction="y" />
