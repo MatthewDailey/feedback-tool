@@ -24,6 +24,7 @@ body {
     max-width: 800px;
     margin-left: 40px;
     margin-right: 40px;
+    margin-bottom: 80px;
 }
 
 a {
@@ -120,6 +121,14 @@ button:focus {
     border-radius: 24px;
 }
 
+.header > h1 {
+    user-select: none;
+}
+
+.header > h1:hover {
+    cursor: pointer;
+}
+
 .header.signed_in > h1 {
     font-size: 12px;
     font-weight: var(--font-heavy-weight);
@@ -159,12 +168,6 @@ button:focus {
     font-size: 24px;
     font-weight: var(--font-heavy-weight);
     color: var(--color-dark);
-}
-
-.sessionOverview > h3 {
-    font-weight: var(--font-heavy-weight);
-    color: var(--color-dark);
-    opacity: 0.8;
 }
 
 .addContact {
@@ -210,4 +213,8 @@ button:focus {
 
 .existingSession {
     color: var(--color-dark);
+}
+
+.existingSession > h1 {
+    font-size: 40px;
 }

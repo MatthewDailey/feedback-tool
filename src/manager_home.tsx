@@ -1,9 +1,7 @@
 import * as React from 'react'
-import { useParams, useHistory } from 'react-router-dom'
-import { ExtendedFirebaseInstance, isEmpty, isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
-import { Contact, User, useUser } from "./auth"
-import { FeedbackSession, FeedbackSessionRequest, Load } from "./models"
-import { useFeedbackSessionRequest, useSession } from "./data"
+import { useHistory } from 'react-router-dom'
+import { useUser } from "./auth"
+import { useSession } from "./data"
 import { Spacer } from "./spacer"
 
 
@@ -19,11 +17,11 @@ const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
     <div className="sessionOverview" onClick={() => history.push(`/session/${props.sessionId}`)}>
       <h2>{session.value.name}</h2>
       <Spacer multiple={1} direction="y" />
-      <h3>{`${session.value.feedbackSessionRequests.length} participants`}</h3>
+      <p>{`${session.value.feedbackSessionRequests.length} participants`}</p>
       <Spacer multiple={1} direction="y" />
-      <h3>{`Created at: ${new Date(session.value.createdAt).toDateString()}`}</h3>
+      <p>{`Created at: ${new Date(session.value.createdAt).toDateString()}`}</p>
       <Spacer multiple={1} direction="y" />
-      <h3>{`Finalized at: ${session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : 'Not yet.'}`}</h3>
+      <p>{`Finalized at: ${session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : 'Not yet.'}`}</p>
     </div>
   )
 }

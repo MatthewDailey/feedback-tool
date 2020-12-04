@@ -83,6 +83,7 @@ const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: str
               <p>{request.value.requesteeName} ({request.value.requesteeEmail})</p>
               <p>Requested pairs: {contactList(request.value.requestedPairs)}</p>
               {request.value.finalizedPairs && <p>finalized pairs: {contactList(request.value.finalizedPairs)}</p>}
+              <Spacer multiple={1} direction="y" />
             </div>
           )
         })
@@ -115,7 +116,7 @@ export const ExistingSession = () => {
       <h3>Participants</h3>
       <Spacer multiple={1} direction="y" />
       <RequestsList requestIds={requestIds} feedbackSession={session.value} />
-      <Spacer multiple={3} direction="y" />
+      <Spacer multiple={2} direction="y" />
       {!session.value.finalizedAt && <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />}
     </div>
   )

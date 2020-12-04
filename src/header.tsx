@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { useFirebase } from "react-redux-firebase"
 import { ShowIfSignedIn } from "./auth"
 import { Spacer } from "./spacer"
@@ -19,7 +20,7 @@ const LogoutButton = () => {
 const Avatar = () => {
   const profile = useSelector(state => state.firebase.auth)
   const url = profile?.photoURL
-  return url && <img className="avatar" src={url} />
+  return url && <img className="avatar" src={url} alt={`${profile?.displayName} (${profile?.email})`}/>
 }
 
 const HeaderSpacing = (props: { children?: React.ReactNode, className?: string }) => (
@@ -28,23 +29,29 @@ const HeaderSpacing = (props: { children?: React.ReactNode, className?: string }
   </div>
 )
 
-const HeaderLoggedOut = () => (
-  <HeaderSpacing className="signed_out">
-    <h1>Feedback.Gifts</h1>
-    <Spacer direction='x' multiple={1} />
-    <LoginButton />
-  </HeaderSpacing>
-)
+const HeaderLoggedOut = () => {
+  const history = useHistory()
+  return (
+    <HeaderSpacing className="signed_out">
+      <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
+      <Spacer direction='x' multiple={1} />
+      <LoginButton />
+    </HeaderSpacing>
+  )
+}
 
-const HeaderLoggedIn = () => (
-  <HeaderSpacing className="signed_in">
-    <h1>Feedback.Gifts</h1>
-    <Spacer direction='x' multiple={1} />
-    <Avatar />
-    <Spacer direction='x' multiple={1} />
-    <LogoutButton />
-  </HeaderSpacing>
-)
+const HeaderLoggedIn = () => {
+  const history = useHistory()
+  return (
+    <HeaderSpacing className="signed_in">
+      <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
+      <Spacer direction='x' multiple={1} />
+      <Avatar />
+      <Spacer direction='x' multiple={1} />
+      <LogoutButton />
+    </HeaderSpacing>
+  )
+}
 
 
 export const Header = () => {
