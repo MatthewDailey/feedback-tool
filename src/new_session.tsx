@@ -75,6 +75,7 @@ export const NewSession = () => {
   const user = useUser()
   const [contactIdToChecked, setContactIdToChecked] = React.useState({})
   const [sessionName, setSessionName] = React.useState('')
+  const [isCreatingSession, setIsCreatingSession] = React.useState(false)
 
   if (!user) {
     return null
@@ -83,19 +84,20 @@ export const NewSession = () => {
 
   const contactIds = Object.keys(contacts)
     .sort((a, b) => contacts[a].name.localeCompare(contacts[b].name))
-  const onCheckboxChangeProvider = (key: string) => (checked: boolean) => {
-    setContactIdToChecked({...contactIdToChecked, [key]: checked})
-  }
+
+  const participants = Object.keys(contacts)
+    .filter(id => contactIdToChecked[id])
+    .map(id => contacts[id])
+  const validInputs = sessionName && participants.length > 1
 
   const createSession = () => {
+    setIsCreatingSession(true)
     // TODO: introduce loading state while creating session
 
-    const participants = Object.keys(contacts)
-      .filter(id => contactIdToChecked[id])
-      .map(id => contacts[id])
     createNewSession(firebase, user, sessionName, participants)
       .then(sessionId => history.push(`/session/${sessionId}`))
       .catch(e => `Failed to create new session ${e}`)
+      .then(() => setIsCreatingSession(false))
   }
 
   return (
@@ -114,17 +116,27 @@ export const NewSession = () => {
           <>
             <ContactCheckbox
               key={id}
-              isChecked={contactIdToChecked[id]}
+              isChecked={!!contactIdToChecked[id]}
               contact={contacts[id]}
-              onChanged={onCheckboxChangeProvider(id)}
+              onChanged={(checked: boolean) => {
+                setContactIdToChecked({...contactIdToChecked, [id]: checked})
+              }}
             />
-            <Spacer multiple={1} direction="y" />
+            <Spacer key={`${id}-spacer`} multiple={1} direction="y" />
           </>
         )
       })}
       <AddContact />
       <Spacer multiple={3} direction="y" />
-      <button className="large" onClick={createSession}>Create new feedback session and notify participants</button>
+      <button className="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
+        Create new feedback session and notify participants
+      </button>
+      {!validInputs &&
+        <>
+          <Spacer multiple={1} direction="y" />
+          <p>To create a new session, you must provide a name and select at least 2 participants.</p>
+        </>
+      }
     </div>
   )
 }

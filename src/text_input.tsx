@@ -11,7 +11,7 @@ export const TextInput = (props: {
   const inputId = `${props.label}-input`
   return (
     <div className={`${props.size} TextInput`}>
-      {props.label && <label for={inputId}>{props.label}</label>}
+      {props.label && <label htmlFor={inputId}>{props.label}</label>}
       <input
         id={inputId}
         type="text"
