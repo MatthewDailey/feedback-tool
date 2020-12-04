@@ -23,7 +23,7 @@ const finalizeSession = async (firebase: ExtendedFirebaseInstance,
   // Remove non-matched pairings with self
   feedbackSessionRequests.forEach(request => {
     const inboundRequests = emailToPairings[request.requesteeEmail] || []
-    const finalPairs = []
+    const finalPairs: Contact[] = []
     inboundRequests.forEach(requestedPair => {
       if ((request.requestedPairs || []).some(contact => contact.email === requestedPair.email)) {
         finalPairs.push(requestedPair)
@@ -58,7 +58,7 @@ const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {
       requestValues.push(r.value)
     }
   }
-  return <button className="large" onClick={() => finalizeSession(firebase, session.value, requestValues)}>Finalize Session</button>
+  return <button className="large" onClick={() => finalizeSession(firebase, session.value!, requestValues)}>Finalize Session</button>
 }
 
 const contactList = (contacts?: Contact[]) => {

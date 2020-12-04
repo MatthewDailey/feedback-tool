@@ -30,7 +30,7 @@ export const ManagerHome = () => {
   const history = useHistory()
   const user = useUser()
 
-  let sessionIdsOrderedByCreatedAt = []
+  let sessionIdsOrderedByCreatedAt: string[] = []
   if (user && user.feedbackSessions) {
     sessionIdsOrderedByCreatedAt = Object.keys(user.feedbackSessions)
     sessionIdsOrderedByCreatedAt.sort((a, b) => user.feedbackSessions[b] - user.feedbackSessions[a])

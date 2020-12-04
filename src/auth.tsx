@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { isLoaded, useFirebaseConnect } from "react-redux-firebase"
 import { User } from "./models"
 
-export const useUser = (): User => {
+export const useUser = (): User|null => {
   const profile = useSelector(state => state.firebase.auth)
   useFirebaseConnect([
     { path: `users/${profile.uid}` }

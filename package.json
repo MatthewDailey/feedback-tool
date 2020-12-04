@@ -5,10 +5,12 @@
     "firebase": "node_modules/firebase-tools/lib/bin/firebase.js",
     "build-dev": "./node_modules/.bin/esbuild compiled/app.js --bundle --define:process.env.NODE_ENV=\\\"development\\\" --outfile=public/app.js",
     "build-prod": "./node_modules/.bin/esbuild compiled/app.js --bundle --define:process.env.NODE_ENV=\\\"production\\\" --outfile=public/app.js",
-    "compile": "node_modules/.bin/tsc src/* --jsx react --outDir compiled",
+    "compile": "node_modules/.bin/tsc",
     "compile-and-build": "npm run compile; npm run build-dev; echo '✅ Build complete'",
     "watch": "fswatch -0 ./src/* | xargs -0 -n 1 -I {} npm run compile-and-build",
-    "develop": "npm run compile-and-build; npm run watch"
+    "develop": "npm run compile-and-build; npm run watch",
+    "use-dev": "npm run firebase -- use feedback-tool-dev; cp src/config/firebase_config_dev.ts src/config/current_config.ts",
+    "use-prod": "npm run firebase -- use feedback-tool-prod; cp src/config/firebase_config_prod.ts src/config/current_config.ts"
   },
   "devDependencies": {
     "esbuild": "^0.8.17",

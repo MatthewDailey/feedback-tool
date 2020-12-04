@@ -81,12 +81,12 @@ export const NewSession = () => {
   if (!user) {
     return null
   }
-  const contacts: {[key: string]: Contact|undefined} = user.contacts || {}
+  const contacts: {[key: string]: Contact} = user.contacts || {}
 
   const contactIds = Object.keys(contacts)
     .sort((a, b) => contacts[a].name.localeCompare(contacts[b].name))
 
-  const participants = Object.keys(contacts)
+  const participants: Contact[] = Object.keys(contacts)
     .filter(id => contactIdToChecked[id])
     .map(id => contacts[id])
   const validInputs = sessionName && participants.length > 1
@@ -113,7 +113,7 @@ export const NewSession = () => {
       <h3>Participants</h3>
       <Spacer multiple={1} direction="y" />
       {contactIds.map(id => {
-        return (
+        return contacts[id] && (
           <>
             <ContactCheckbox
               key={id}

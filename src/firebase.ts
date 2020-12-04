@@ -1,7 +1,7 @@
 import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/database"
-import { firebaseConfig } from "./firebase_config_dev"
+import { firebaseConfig } from "./config/current_config"
 import { combineReducers, createStore } from "redux"
 import { firebaseReducer } from "react-redux-firebase"
 
