@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "compiled",
     "strictNullChecks": true,
-    "jsx": "react"
+    "jsx": "react",
+    "noEmit": true
   }
 }
