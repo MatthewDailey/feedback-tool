@@ -2,7 +2,9 @@ import * as functions from 'firebase-functions'
 import * as SendGrid from '@sendgrid/mail'
 import { FeedbackSessionRequest } from "../../src/models"
 
-SendGrid.setApiKey('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')
+// Config set manually in firebase function via the cli
+SendGrid.setApiKey(functions.config().sendgrid.api_key)
+const linkDomain = functions.config().app.domain
 
 const sendEmail = async (to: string, subject: string, text: string) => {
   const msg = {
@@ -24,7 +26,7 @@ export const notifyParticipantSessionOpened = functions.database.ref('/feedbackS
     return sendEmail(
       request.requesteeEmail,
       `Feedback session: ${request.sessionName} - You're invited!`,
-      `You were invited to participate in feedback session ${request.sessionName} by ${request.sessionOwnerName}. To participate, visit http://localhost:5000/participant/${requestId}`
+      `You were invited to participate in feedback session ${request.sessionName} by ${request.sessionOwnerName}. To participate, visit ${linkDomain}/participant/${requestId}`
     )
   }))
 
@@ -38,7 +40,7 @@ export const notifyParticipantSessionFinalized = functions.database.ref('/feedba
       return sendEmail(
         after.requesteeEmail,
         `Feedback session: ${after.sessionName} - Pairs finalized`,
-        `Your pairings for feedback session ${after.sessionName} have been finalized by ${after.sessionOwnerName}. To view them, visit http://localhost:5000/participant/${requestId}`
+        `Your pairings for feedback session ${after.sessionName} have been finalized by ${after.sessionOwnerName}. To view them, visit ${linkDomain}/participant/${requestId}`
       )
     }
     return Promise.resolve()
