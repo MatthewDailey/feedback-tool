@@ -6,6 +6,7 @@ import { Contact } from "./auth"
 import { ContactCheckbox } from "./contact_checkbox"
 import { Load } from "./models"
 import { useFeedbackSessionRequest } from "./data"
+import { Spacer } from "./spacer"
 
 
 
@@ -30,22 +31,36 @@ export const Participant = () => {
     firebase.update(`feedbackSessionRequests/${feedbackSessionRequestId}`, { requestedPairs, requested: true })
   }
 
+  const request = feedbackSessionRequest.value
+
   return (
-    <div>
-      <div>{"request id: " + JSON.stringify(feedbackSessionRequest)}</div>
-      <div>
-        {
-          feedbackSessionRequest.value.participants.map((contact) => (
+    <div className="participant">
+      <Spacer multiple={2} direction="y" />
+      <h1>{request.sessionName}</h1>
+      <Spacer multiple={1} direction="y" />
+      <p>{`Invited by ${request.sessionOwnerName} (${request.sessionOwnerEmail}) on ${new Date(request.sessionCreatedAt).toDateString()}.` }</p>
+      <Spacer multiple={3} direction="y" />
+      <h3>Who would you like to have 30 min feedback conversation with?</h3>
+      <Spacer multiple={1} direction="y" />
+      {
+        feedbackSessionRequest.value.participants.map((contact) => contact.email !== request.requesteeEmail && (
+          <div key={contact.email}>
             <ContactCheckbox
-              key={contact.email}
-              isChecked={emailToChecked[contact.email]}
+              isChecked={
+                emailToChecked[contact.email]
+                || request.requestedPairs.some(requestedPair => requestedPair.email === contact.email)}
               contact={contact}
               onChanged={setEmailCheckedProvider(contact.email)}
             />
-          ))
-        }
-        <button onClick={setResponseEmails}>Submit</button>
-      </div>
+            <Spacer multiple={1} direction="y" />
+          </ div>
+        ))
+      }
+      <Spacer multiple={2} direction="y" />
+      {
+        request.requested ? <p>Your requested pairs have been submitted. You'll be notified when {request.sessionOwnerName} finalizes the pairings.</p>
+          : <button className="large" onClick={setResponseEmails}>Submit</button>
+      }
     </div>
   )
 }

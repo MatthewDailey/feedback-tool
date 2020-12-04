@@ -197,3 +197,8 @@ button:focus {
 .contactCheckbox > input:focus {
     outline: none;
 }
+
+.participant {
+    margin-left: 40px;
+    color: var(--color-dark);
+}

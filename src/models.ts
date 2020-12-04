@@ -20,9 +20,12 @@ export type FeedbackSessionRequest = {
   sessionName: string,
   sessionOwnerName: string,
   sessionOwnerEmail: string,
+  sessionCreatedAt: number,
+  requested?: boolean
   requesteeName: string,
   requesteeEmail: string,
   participants: Contact[],
   requestedPairs?: Contact[],
   finalizedPairs?: Contact[],
+  finalizedAt?: number
 }
