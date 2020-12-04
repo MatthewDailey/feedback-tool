@@ -53,6 +53,8 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
     firebase.update(`feedbackSessionRequests/${feedbackSessionRequestId}`, { requestedPairs, requested: true })
   }
 
+  const requestedPairs = props.request.requestedPairs || []
+
   return (
     <>
       <p>{`Invited by ${props.request.sessionOwnerName} (${props.request.sessionOwnerEmail}) on ${new Date(props.request.sessionCreatedAt).toDateString()}.`}</p>
@@ -65,7 +67,7 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
             <ContactCheckbox
               isChecked={
                 emailToChecked[contact.email]
-                || props.request.requestedPairs.some(requestedPair => requestedPair.email === contact.email)}
+                || requestedPairs.some(requestedPair => requestedPair.email === contact.email)}
               contact={contact}
               onChanged={setEmailCheckedProvider(contact.email)}
             />

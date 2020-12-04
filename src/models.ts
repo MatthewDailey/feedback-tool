@@ -1,5 +1,12 @@
-import { Contact } from "./auth"
+export type Contact = { name: string, email: string }
 
+export type User = {
+  uid: string
+  displayName: string
+  email: string
+  contacts: { [key: string]: Contact },
+  feedbackSessions: { [sessionId: string]: number }
+}
 
 export type Load<T> = { loaded: false } | { loaded: true, value: null|T }
 

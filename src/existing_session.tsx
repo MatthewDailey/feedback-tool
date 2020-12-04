@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
-import { FeedbackSession, FeedbackSessionRequest } from "./models"
-import { Contact } from "./auth"
+import { Contact, FeedbackSession, FeedbackSessionRequest } from "./models"
 import { useFeedbackSessionRequest, useSession } from "./data"
 import { Spacer } from "./spacer"
 
