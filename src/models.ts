@@ -26,6 +26,6 @@ export type FeedbackSessionRequest = {
   requesteeEmail: string,
   participants: Contact[],
   requestedPairs?: Contact[],
-  finalizedPairs?: Contact[],
+  finalizedPairs: Contact[]|undefined,
   finalizedAt?: number
 }
