@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { Contact, User, useUser } from "./auth"
 import { ContactCheckbox } from "./contact_checkbox"
-import { EmailInput, TextInput } from "./text_input"
+import { TextInput } from "./text_input"
+import { Spacer } from "./spacer"
 
 
 const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
@@ -54,14 +55,15 @@ const AddContact = () => {
     }
   }
 
+  // TODO (mjd): validate inputs.
+
   return (
-    <div>
-      <p>Add contact</p>
-      <p>name</p>
-      <TextInput value={name} onChange={(e) => setName(e.target.value)}/>
-      <p>email</p>
-      <EmailInput value={email} onChange={(e) => setEmail(e.target.value)}/>
-      <button onClick={addContact}>Add contact</button>
+    <div className="addContact">
+      <TextInput size="small" label="Name" hint="John Doe" value={name} onChange={(v) => setName(v)}/>
+      <Spacer multiple={1} direction="x" />
+      <TextInput size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
+      <Spacer multiple={1} direction="x" />
+      <button className="small" onClick={addContact}>Add Contact</button>
     </div>
   )
 }
@@ -97,11 +99,16 @@ export const NewSession = () => {
   }
 
   return (
-    <div>
-      <p>Session Name</p>
-      <TextInput value={sessionName} onChange={(e) => setSessionName(e.target.value)} />
-
-      <p>Participants</p>
+    <div className="newSession">
+      <Spacer multiple={2} direction="y" />
+      <h1>New Feedback Session</h1>
+      <Spacer multiple={2} direction="y" />
+      <h3>Session Name</h3>
+      <Spacer multiple={1} direction="y" />
+      <TextInput size="large" value={sessionName} onChange={(e) => setSessionName(e)} hint="Q3 Perf Review"/>
+      <Spacer multiple={2} direction="y" />
+      <h3>Participants</h3>
+      <Spacer multiple={1} direction="y" />
       {contactIds.map(id => {
         return (
           <ContactCheckbox
@@ -112,10 +119,9 @@ export const NewSession = () => {
           />
         )
       })}
-
       <AddContact />
-
-      <button onClick={createSession}>Create Session</button>
+      <Spacer multiple={3} direction="y" />
+      <button className="large" onClick={createSession}>Create new feedback session and notify participants</button>
     </div>
   )
 }
