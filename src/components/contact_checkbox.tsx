@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Spacer } from "./components/spacer"
-import { Contact } from "./models"
+import { Spacer } from "./spacer"
+import { Contact } from "../lib/models"
 
 export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void }) => {
   const label = `${props.contact.name} (${props.contact.email})`

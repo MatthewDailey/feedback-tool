@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
-import { useUser } from "./auth"
-import { ContactCheckbox } from "./contact_checkbox"
-import { TextInput } from "./components/text_input"
-import { Spacer } from "./components/spacer"
-import { Contact, User } from "./models"
+import { useUser } from "../lib/auth"
+import { ContactCheckbox } from "../components/contact_checkbox"
+import { TextInput } from "../components/text_input"
+import { Spacer } from "../components/spacer"
+import { Contact, User } from "../lib/models"
 
 
 const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {

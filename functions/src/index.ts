@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 import * as SendGrid from '@sendgrid/mail'
-import { FeedbackSessionRequest } from "../../src/models"
+import { FeedbackSessionRequest } from "../../src/lib/models"
 
 // Config set manually in firebase function via the cli
 SendGrid.setApiKey(functions.config().sendgrid.api_key)

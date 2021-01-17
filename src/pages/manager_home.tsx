@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useUser } from "./auth"
-import { useSession } from "./data"
-import { Spacer } from "./components/spacer"
+import { useUser } from "../lib/auth"
+import { useSession } from "../lib/data"
+import { Spacer } from "../components/spacer"
 
 
 const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
