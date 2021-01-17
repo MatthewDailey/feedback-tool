@@ -6,6 +6,7 @@ import { ContactCheckbox } from "../components/contact_checkbox"
 import { FeedbackSessionRequest } from "../lib/models"
 import { useFeedbackSessionRequest } from "../lib/data"
 import { Spacer } from "../components/spacer"
+import { Button } from "../components/ctas"
 
 const Finalized = (props: { request: FeedbackSessionRequest}) => {
   const request = props.request
@@ -78,7 +79,7 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
       <Spacer multiple={2} direction="y" />
       {
         props.request.requested ? <p>Your requested pairs have been submitted. You'll be notified when {props.request.sessionOwnerName} finalizes the pairings.</p>
-          : <button className="large" onClick={setResponseEmails}>Submit</button>
+          : <Button className="large" onClick={setResponseEmails}>Submit</Button>
       }
     </>
   )

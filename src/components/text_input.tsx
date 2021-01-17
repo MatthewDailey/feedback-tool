@@ -13,12 +13,12 @@ const StyledInput = styled('input', {
       large: {
         height: '40px',
         width: '300px',
-        'border-radius': '8px',
+        borderRadius: '8px',
         padding: '12px 16px',
       },
       small: {
         height: '24px',
-        'border-radius': '4px',
+        borderRadius: '4px',
         padding: '4px 8px',
       },
     },
@@ -27,12 +27,12 @@ const StyledInput = styled('input', {
 
 const Container = styled('div', {
   display: 'flex',
-  'flex-direction': 'column',
-  'align-items': 'start',
+  flexDirection: 'column',
+  alignItems: 'start',
 })
 
 const Label = styled('label', {
-  'font-size': '8px'
+  fontSize: '8px'
 })
 
 export const TextInput = (props: {

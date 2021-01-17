@@ -4,6 +4,7 @@ import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { Contact, FeedbackSession, FeedbackSessionRequest } from "../lib/models"
 import { useFeedbackSessionRequest, useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
+import { Button } from "../components/ctas"
 
 
 const finalizeSession = async (firebase: ExtendedFirebaseInstance,
@@ -58,7 +59,7 @@ const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {
       requestValues.push(r.value)
     }
   }
-  return <button className="large" onClick={() => finalizeSession(firebase, session.value!, requestValues)}>Finalize Session</button>
+  return <Button className="large" onClick={() => finalizeSession(firebase, session.value!, requestValues)}>Finalize Session</Button>
 }
 
 const contactList = (contacts?: Contact[]) => {

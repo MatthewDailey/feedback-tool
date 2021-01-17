@@ -27,35 +27,6 @@ body {
     margin-bottom: 80px;
 }
 
-a {
-    color: var(--color-teal)
-}
-
-a:hover {
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-button {
-    background-color: var(--color-seafoam);
-    border: var(--border-width) solid var(--color-seafoam);
-    color: var(--color-dark);
-}
-button:enabled:hover {
-    cursor: pointer;
-    border: var(--border-width) solid var(--color-dark);
-}
-button:enabled:focus {
-    border: var(--border-width) solid var(--color-dark);
-}
-button:enabled:active {
-    border: var(--border-width) solid var(--color-dark);
-    background-color: var(--color-dark);
-    color: var(--color-light)
-}
-button:disabled {
-    opacity: 0.5;
-}
 button.large {
     height: 36px;
     padding-left: 22px;

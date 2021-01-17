@@ -4,16 +4,17 @@ import { useHistory } from 'react-router-dom'
 import { useFirebase } from "react-redux-firebase"
 import { ShowIfSignedIn } from "../lib/auth"
 import { Spacer } from "./spacer"
+import { Link } from "./ctas"
 
 const LoginButton = () => {
   const firebase = useFirebase()
-  return <a onClick={() => firebase.login({ provider: 'google', type: 'popup' })}>log in</a>
+  return <Link onClick={() => firebase.login({ provider: 'google', type: 'popup' })}>log in</Link>
 }
 
 const LogoutButton = () => {
   const firebase = useFirebase()
   return (
-    <a onClick={() => firebase.logout()}>sign out</a>
+    <Link onClick={() => firebase.logout()}>sign out</Link>
   )
 }
 

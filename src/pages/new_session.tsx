@@ -6,6 +6,7 @@ import { ContactCheckbox } from "../components/contact_checkbox"
 import { TextInput } from "../components/text_input"
 import { Spacer } from "../components/spacer"
 import { Contact, User } from "../lib/models"
+import { Button } from "../components/ctas"
 
 
 const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
@@ -64,7 +65,7 @@ const AddContact = () => {
       <Spacer multiple={1} direction="x" />
       <TextInput size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
       <Spacer multiple={1} direction="x" />
-      <button className="small" onClick={addContact}>Add Contact</button>
+      <Button className="small" onClick={addContact}>Add Contact</Button>
     </div>
   )
 }
@@ -129,9 +130,9 @@ export const NewSession = () => {
       })}
       <AddContact />
       <Spacer multiple={3} direction="y" />
-      <button className="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
+      <Button className="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
         Create new feedback session and notify participants
-      </button>
+      </Button>
       {!validInputs &&
         <>
           <Spacer multiple={1} direction="y" />

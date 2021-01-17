@@ -9,6 +9,9 @@ export const { styled, css } = createStyled({
       $seafoam: '#BEE3DB',
       $teal: '#89B0AE',
       $peach: '#FFD6BA',
+    },
+    borderWidths: {
+      $borderWidth: '2px',
     }
   },
   breakpoints: {},

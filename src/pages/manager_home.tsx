@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useUser } from "../lib/auth"
 import { useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
+import { Button } from "../components/ctas"
 
 
 const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
@@ -41,7 +42,7 @@ export const ManagerHome = () => {
       <Spacer multiple={2} direction='y' />
       <h1>Feedback Sessions</h1>
       <Spacer multiple={2} direction='y' />
-      <button className="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</button>
+      <Button className="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</Button>
       <Spacer multiple={2} direction='y' />
       <div className="sessionOverviewsHolder">
         {sessionIdsOrderedByCreatedAt.map(id => <FeedbackSessionOverview sessionId={id} key={id} />)}
