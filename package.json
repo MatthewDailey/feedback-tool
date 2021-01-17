@@ -7,7 +7,7 @@
     "build-prod": "./node_modules/.bin/esbuild src/app.tsx --bundle --minify --define:process.env.NODE_ENV=\\\"production\\\" --outfile=public/app.js",
     "compile": "node_modules/.bin/tsc && echo '✅ Build success' || echo '😢 Build failure' ",
     "compile-and-build": "npm run build-dev; npm run compile",
-    "watch": "fswatch -0 ./src/* | xargs -0 -n 1 -I {} npm run compile-and-build",
+    "watch": "fswatch -0 -r ./src/ | xargs -0 -n 1 -I {} npm run compile-and-build",
     "develop": "npm run compile-and-build; npm run watch",
     "use-dev": "npm run firebase -- use feedback-tool-dev; cp src/config/firebase_config_dev.ts src/config/current_config.ts",
     "use-prod": "npm run firebase -- use feedback-tool-prod; cp src/config/firebase_config_prod.ts src/config/current_config.ts"
