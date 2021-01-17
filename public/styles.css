@@ -75,37 +75,6 @@ button:focus {
     outline: none;
 }
 
-.TextInput > input {
-    border: 1px solid var(--color-dark);
-}
-
-.TextInput > input:focus {
-    border: 1px solid var(--color-teal);
-}
-
-.large.TextInput > input {
-    height: 40px;
-    width: 300px;
-    border-radius: 8px;
-    padding: 12px 16px;
-}
-
-.small.TextInput > input {
-    height: 24px;
-    border-radius: 4px;
-    padding: 4px 8px;
-}
-
-.TextInput > label {
-    font-size: 8px;
-}
-
-.TextInput {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
 .header {
     margin-top: 40px;
     margin-left: 40px;
