@@ -42,7 +42,7 @@ export const ManagerHome = () => {
       <Spacer multiple={2} direction='y' />
       <h1>Feedback Sessions</h1>
       <Spacer multiple={2} direction='y' />
-      <Button className="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</Button>
+      <Button buttonSize="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</Button>
       <Spacer multiple={2} direction='y' />
       <div className="sessionOverviewsHolder">
         {sessionIdsOrderedByCreatedAt.map(id => <FeedbackSessionOverview sessionId={id} key={id} />)}

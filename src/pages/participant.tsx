@@ -79,7 +79,7 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
       <Spacer multiple={2} direction="y" />
       {
         props.request.requested ? <p>Your requested pairs have been submitted. You'll be notified when {props.request.sessionOwnerName} finalizes the pairings.</p>
-          : <Button className="large" onClick={setResponseEmails}>Submit</Button>
+          : <Button buttonSize="large" onClick={setResponseEmails}>Submit</Button>
       }
     </>
   )

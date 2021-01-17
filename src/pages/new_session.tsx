@@ -65,7 +65,7 @@ const AddContact = () => {
       <Spacer multiple={1} direction="x" />
       <TextInput size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
       <Spacer multiple={1} direction="x" />
-      <Button className="small" onClick={addContact}>Add Contact</Button>
+      <Button buttonSize="small" onClick={addContact}>Add Contact</Button>
     </div>
   )
 }
@@ -130,7 +130,7 @@ export const NewSession = () => {
       })}
       <AddContact />
       <Spacer multiple={3} direction="y" />
-      <Button className="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
+      <Button buttonSize="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
         Create new feedback session and notify participants
       </Button>
       {!validInputs &&

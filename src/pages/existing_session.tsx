@@ -59,7 +59,7 @@ const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {
       requestValues.push(r.value)
     }
   }
-  return <Button className="large" onClick={() => finalizeSession(firebase, session.value!, requestValues)}>Finalize Session</Button>
+  return <Button buttonSize="large" onClick={() => finalizeSession(firebase, session.value!, requestValues)}>Finalize Session</Button>
 }
 
 const contactList = (contacts?: Contact[]) => {
