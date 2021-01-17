@@ -5,7 +5,7 @@ import { useFirebase } from "react-redux-firebase"
 import { ContactCheckbox } from "./contact_checkbox"
 import { FeedbackSessionRequest } from "./models"
 import { useFeedbackSessionRequest } from "./data"
-import { Spacer } from "./spacer"
+import { Spacer } from "./components/spacer"
 
 const Finalized = (props: { request: FeedbackSessionRequest}) => {
   const request = props.request

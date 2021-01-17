@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { useUser } from "./auth"
 import { ContactCheckbox } from "./contact_checkbox"
-import { TextInput } from "./text_input"
-import { Spacer } from "./spacer"
+import { TextInput } from "./components/text_input"
+import { Spacer } from "./components/spacer"
 import { Contact, User } from "./models"
 
 

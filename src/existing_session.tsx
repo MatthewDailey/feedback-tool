@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { Contact, FeedbackSession, FeedbackSessionRequest } from "./models"
 import { useFeedbackSessionRequest, useSession } from "./data"
-import { Spacer } from "./spacer"
+import { Spacer } from "./components/spacer"
 
 
 const finalizeSession = async (firebase: ExtendedFirebaseInstance,

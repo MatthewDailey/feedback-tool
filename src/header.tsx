@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useFirebase } from "react-redux-firebase"
 import { ShowIfSignedIn } from "./auth"
-import { Spacer } from "./spacer"
+import { Spacer } from "./components/spacer"
 
 const LoginButton = () => {
   const firebase = useFirebase()
