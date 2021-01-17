@@ -15,7 +15,7 @@ export const useUser = (): User|null => {
   return { uid: profile.uid, ...users[profile.uid] }
 }
 
-export const ShowIfSignedIn = (props: { signedIn: React.ReactNode, signedOut: React.ReactNode }) => {
+export const ShowIfSignedIn = (props: { signedIn: React.ReactElement|null, signedOut: React.ReactElement|null }) => {
   const profile = useSelector(state => state.firebase.auth)
 
   if (!profile.isLoaded) {

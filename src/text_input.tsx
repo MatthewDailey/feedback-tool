@@ -4,7 +4,7 @@ import * as React from 'react'
 export const TextInput = (props: {
   label?: string,
   hint?: string,
-  value: string|null,
+  value: string|undefined,
   onChange: (val: string) => void,
   size: 'large'|'small'
 }) => {
