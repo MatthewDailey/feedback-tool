@@ -25,7 +25,7 @@ const StyledCheckbox = styled(Checkbox.Root, {
   marginBottom: 10,
   '&:focus': {
     outline: 'none',
-    boxShadow: 'inset 0 0 0 1px $teal',
+    boxShadow: 'inset 0 0 0 1px $teal, 0 0 0 1px $teal',
   },
   '&:hover': {
     cursor: 'pointer'

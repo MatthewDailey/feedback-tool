@@ -5,6 +5,7 @@ const StyledInput = styled('input', {
   border: '1px solid $dark',
 
   '&:focus': {
+    boxShadow: '0 0 0 1px $teal',
     border: '1px solid $teal',
   },
 
