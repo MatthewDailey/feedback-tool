@@ -7,6 +7,7 @@ import { TextInput } from "../components/text_input"
 import { Spacer } from "../components/spacer"
 import { Contact, User } from "../lib/models"
 import { Button } from "../components/ctas"
+import { Wrapper } from "../components/wrapper"
 
 
 const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
@@ -103,7 +104,7 @@ export const NewSession = () => {
   }
 
   return (
-    <div className="newSession wrapper">
+    <Wrapper className="newSession">
       <Spacer multiple={2} direction="y" />
       <h1>New Feedback Session</h1>
       <Spacer multiple={2} direction="y" />
@@ -138,6 +139,6 @@ export const NewSession = () => {
           <p>To create a new session, you must provide a name and select at least 2 participants.</p>
         </>
       }
-    </div>
+    </Wrapper>
   )
 }

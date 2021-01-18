@@ -5,6 +5,7 @@ import { Contact, FeedbackSession, FeedbackSessionRequest } from "../lib/models"
 import { useFeedbackSessionRequest, useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
+import { Wrapper } from "../components/wrapper"
 
 
 const finalizeSession = async (firebase: ExtendedFirebaseInstance,
@@ -103,7 +104,7 @@ export const ExistingSession = () => {
   const requestIds = session.value.feedbackSessionRequests || []
 
   return (
-    <div className="existingSession wrapper">
+    <Wrapper className="existingSession">
       <Spacer multiple={2} direction='y' />
       <h1>{session.value.name}</h1>
       <Spacer multiple={1} direction="y" />
@@ -118,6 +119,6 @@ export const ExistingSession = () => {
       <RequestsList requestIds={requestIds} feedbackSession={session.value} />
       <Spacer multiple={2} direction="y" />
       {!session.value.finalizedAt && <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />}
-    </div>
+    </Wrapper>
   )
 }

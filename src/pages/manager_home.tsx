@@ -4,6 +4,7 @@ import { useUser } from "../lib/auth"
 import { useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
+import { Wrapper } from "../components/wrapper"
 
 
 const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
@@ -38,7 +39,7 @@ export const ManagerHome = () => {
   }
 
   return (
-    <div className="manager_home wrapper">
+    <Wrapper className="manager_home">
       <Spacer multiple={2} direction='y' />
       <h1>Feedback Sessions</h1>
       <Spacer multiple={2} direction='y' />
@@ -47,6 +48,6 @@ export const ManagerHome = () => {
       <div className="sessionOverviewsHolder">
         {sessionIdsOrderedByCreatedAt.map(id => <FeedbackSessionOverview sessionId={id} key={id} />)}
       </div>
-    </div>
+    </Wrapper>
   )
 }
