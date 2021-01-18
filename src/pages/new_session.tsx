@@ -115,17 +115,16 @@ export const NewSession = () => {
       <Spacer multiple={1} direction="y" />
       {contactIds.map(id => {
         return contacts[id] && (
-          <>
+          <React.Fragment key={`frag-${id}`}>
             <ContactCheckbox
-              key={id}
               isChecked={!!contactIdToChecked[id]}
               contact={contacts[id]}
               onChanged={(checked: boolean) => {
                 setContactIdToChecked({...contactIdToChecked, [id]: checked})
               }}
             />
-            <Spacer key={`${id}-spacer`} multiple={1} direction="y" />
-          </>
+            <Spacer multiple={1} direction="y" />
+          </React.Fragment>
         )
       })}
       <AddContact />
