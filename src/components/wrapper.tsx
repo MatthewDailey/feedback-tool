@@ -13,6 +13,11 @@ export const Wrapper = styled('div', {
     fontWeight: "$heavy"
   },
 
+  h2: {
+    fontSize: 24,
+    fontWeight: '$heavy',
+  },
+
   h3: {
     fontSize: 12,
     fontWeight: "$heavy"

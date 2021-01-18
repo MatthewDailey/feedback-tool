@@ -12,24 +12,6 @@
     --border-width: 2px;
 }
 
-.sessionOverview {
-    padding: 14px;
-    border: 2px solid transparent;
-    transform: translateX(-16px);
-}
-
-.sessionOverview:hover {
-    border: 2px solid var(--color-peach);
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.sessionOverview > h2 {
-    font-size: 24px;
-    font-weight: var(--font-heavy-weight);
-    color: var(--color-dark);
-}
-
 .addContact {
     display: flex;
     flex-direction: row;

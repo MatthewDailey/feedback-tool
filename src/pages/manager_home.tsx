@@ -5,7 +5,20 @@ import { useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
+import { styled } from '../components/styled'
 
+
+const SessionOverviewWrapper = styled('div', {
+  padding: 14,
+  border: '2px solid transparent',
+  transform: 'translateX(-16px)',
+
+  '&:hover': {
+    border: '2px solid var(--color-peach)',
+    borderRadius: 8,
+    cursor: 'pointer',
+  },
+})
 
 const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
   const session = useSession(props.sessionId)
@@ -16,7 +29,7 @@ const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
   }
 
   return (
-    <div className="sessionOverview" onClick={() => history.push(`/session/${props.sessionId}`)}>
+    <SessionOverviewWrapper onClick={() => history.push(`/session/${props.sessionId}`)}>
       <h2>{session.value.name}</h2>
       <Spacer multiple={1} direction="y" />
       <p>{`${session.value.feedbackSessionRequests.length} participants`}</p>
@@ -24,7 +37,7 @@ const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
       <p>{`Created at: ${new Date(session.value.createdAt).toDateString()}`}</p>
       <Spacer multiple={1} direction="y" />
       <p>{`Finalized at: ${session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : 'Not yet.'}`}</p>
-    </div>
+    </SessionOverviewWrapper>
   )
 }
 
