@@ -18,7 +18,8 @@ export const store = createStore(rootReducer, initialState)
 
 // react-redux-firebase config
 const rrfConfig = {
-  userProfile: 'users'
+  userProfile: 'users',
+  preserveOnLogout: ['feedbackSessionRequests'],
   // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 }
 export const reactReduxFirebaseProps = {
