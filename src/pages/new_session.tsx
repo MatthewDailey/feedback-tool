@@ -8,6 +8,8 @@ import { Spacer } from "../components/spacer"
 import { Contact, User } from "../lib/models"
 import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
+import { styled } from '../components/styled'
+import { AddContact } from "../components/add_contact"
 
 
 const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
@@ -37,38 +39,6 @@ const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User,
   const updateResults = await firebase.update(`feedbackSessions/${sessionId}`, { feedbackSessionRequests: requestPushResults.map(r => r.key)})
 
   return sessionId
-}
-
-const AddContact = () => {
-  const firebase = useFirebase()
-  const user = useUser()
-  const [name, setName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-
-  if (!user) { return null }
-
-  const addContact = () => {
-    if (name && email) {
-      firebase.push(`users/${user.uid}/contacts`, { name, email })
-        .then(() => {
-          setName('')
-          setEmail('')
-        })
-        .catch((e) => console.error('Failed to add contact', e))
-    }
-  }
-
-  // TODO (mjd): validate inputs.
-
-  return (
-    <div className="addContact">
-      <TextInput size="small" label="Name" hint="John Doe" value={name} onChange={(v) => setName(v)}/>
-      <Spacer multiple={1} direction="x" />
-      <TextInput size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
-      <Spacer multiple={1} direction="x" />
-      <Button buttonSize="small" onClick={addContact}>Add Contact</Button>
-    </div>
-  )
 }
 
 
