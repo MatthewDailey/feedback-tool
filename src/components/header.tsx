@@ -5,6 +5,7 @@ import { useFirebase } from "react-redux-firebase"
 import { ShowIfSignedIn } from "../lib/auth"
 import { Spacer } from "./spacer"
 import { Link } from "./ctas"
+import { styled } from './styled'
 
 const LoginButton = () => {
   const firebase = useFirebase()
@@ -18,39 +19,71 @@ const LogoutButton = () => {
   )
 }
 
+const AvatarImg = styled('img', {
+  height: 24,
+  width: 24,
+  borderRadius: 24,
+})
+
 const Avatar = () => {
   const profile = useSelector(state => state.firebase.auth)
   const url = profile?.photoURL
-  return url && <img className="avatar" src={url} alt={`${profile?.displayName} (${profile?.email})`}/>
+  return url && <AvatarImg src={url} alt={`${profile?.displayName} (${profile?.email})`}/>
 }
 
-const HeaderSpacing = (props: { children?: React.ReactNode, className?: string }) => (
-  <div className={'header ' + (props.className ? props.className : '')}>
-    {props.children}
-  </div>
-)
+const HeaderWrapper = styled('div', {
+  marginTop: 40,
+  marginLeft: 40,
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  color: "$dark",
+
+  h1: {
+    userSelect: 'none',
+    fontWeight: "$heavy"
+  },
+  'h1:hover': {
+    cursor: 'pointer',
+  },
+
+  variants: {
+    auth: {
+      signedOut: {
+        h1: {
+          fontSize: 40,
+        }
+      },
+      signedIn: {
+        h1: {
+          fontSize: 12,
+        }
+      }
+    }
+  }
+})
 
 const HeaderLoggedOut = () => {
   const history = useHistory()
   return (
-    <HeaderSpacing className="signed_out">
+    <HeaderWrapper auth="signedOut">
       <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
       <Spacer direction='x' multiple={1} />
       <LoginButton />
-    </HeaderSpacing>
+    </HeaderWrapper>
   )
 }
 
 const HeaderLoggedIn = () => {
   const history = useHistory()
   return (
-    <HeaderSpacing className="signed_in">
+    <HeaderWrapper auth="signedIn">
       <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
       <Spacer direction='x' multiple={1} />
       <Avatar />
       <Spacer direction='x' multiple={1} />
       <LogoutButton />
-    </HeaderSpacing>
+    </HeaderWrapper>
   )
 }
 
