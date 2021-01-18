@@ -47,17 +47,6 @@
     color: var(--color-dark)
 }
 
-.manager_home {
-    margin-left: 40px;
-    margin-right: 40px;
-}
-
-.manager_home > h1 {
-    font-size: 40px;
-    font-weight: var(--font-heavy-weight);
-    color: var(--color-dark);
-}
-
 .sessionOverview {
     padding: 14px;
     border: 2px solid transparent;
@@ -82,23 +71,6 @@
     align-items: end;
 }
 
-.newSession {
-    margin-left: 40px;
-    margin-right: 40px;
-}
-
-.newSession > h1 {
-    font-size: 40px;
-    font-weight: var(--font-heavy-weight);
-    color: var(--color-dark)
-}
-
-.newSession > h3 {
-    font-size: 12px;
-    font-weight: var(--font-heavy-weight);
-    color: var(--color-dark)
-}
-
 .contactCheckbox {
     display: flex;
     flex-direction: row;
@@ -110,17 +82,4 @@
 
 .contactCheckbox > input:focus {
     outline: none;
-}
-
-.participant {
-    margin-left: 40px;
-    color: var(--color-dark);
-}
-
-.existingSession {
-    color: var(--color-dark);
-}
-
-.existingSession > h1 {
-    font-size: 40px;
 }

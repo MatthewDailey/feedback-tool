@@ -104,7 +104,7 @@ export const NewSession = () => {
   }
 
   return (
-    <Wrapper className="newSession">
+    <Wrapper>
       <Spacer multiple={2} direction="y" />
       <h1>New Feedback Session</h1>
       <Spacer multiple={2} direction="y" />

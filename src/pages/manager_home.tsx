@@ -39,7 +39,7 @@ export const ManagerHome = () => {
   }
 
   return (
-    <Wrapper className="manager_home">
+    <Wrapper>
       <Spacer multiple={2} direction='y' />
       <h1>Feedback Sessions</h1>
       <Spacer multiple={2} direction='y' />

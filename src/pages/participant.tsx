@@ -7,6 +7,7 @@ import { FeedbackSessionRequest } from "../lib/models"
 import { useFeedbackSessionRequest } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
+import { Wrapper } from "../components/wrapper"
 
 const Finalized = (props: { request: FeedbackSessionRequest}) => {
   const request = props.request
@@ -95,11 +96,11 @@ export const Participant = () => {
   const request = feedbackSessionRequest.value
 
   return (
-    <div className="participant">
+    <Wrapper>
       <Spacer multiple={2} direction="y" />
       <h1>{request.sessionName}</h1>
       <Spacer multiple={1} direction="y" />
       { request.finalizedAt ? <Finalized request={request} /> : <Requested request={request} /> }
-    </div>
+    </Wrapper>
   )
 }

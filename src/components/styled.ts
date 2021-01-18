@@ -10,6 +10,10 @@ export const { styled, css } = createStyled({
       $teal: '#89B0AE',
       $peach: '#FFD6BA',
     },
+    fontWeights: {
+      $medium: '400',
+      $heavy: '900',
+    },
     borderWidths: {
       $borderWidth: '2px',
     }

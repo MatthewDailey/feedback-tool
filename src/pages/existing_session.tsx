@@ -104,7 +104,7 @@ export const ExistingSession = () => {
   const requestIds = session.value.feedbackSessionRequests || []
 
   return (
-    <Wrapper className="existingSession">
+    <Wrapper>
       <Spacer multiple={2} direction='y' />
       <h1>{session.value.name}</h1>
       <Spacer multiple={1} direction="y" />
