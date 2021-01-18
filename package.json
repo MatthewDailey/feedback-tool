@@ -11,7 +11,10 @@
     "watch": "fswatch -0 -r ./src/ | xargs -0 -n 1 -I {} npm run compile-and-build",
     "develop": "npm run compile-and-build; npm run watch",
     "use-dev": "npm run firebase -- use feedback-tool-dev; cp src/config/firebase_config_dev.ts src/config/current_config.ts",
-    "use-prod": "npm run firebase -- use feedback-tool-prod; cp src/config/firebase_config_prod.ts src/config/current_config.ts"
+    "use-prod": "npm run firebase -- use feedback-tool-prod; cp src/config/firebase_config_prod.ts src/config/current_config.ts",
+    "deploy": "npm run firebase -- deploy",
+    "deploy-dev": "npm run use-dev; npm run build-dev; npm run deploy",
+    "deploy-prod": "npm run use-prod; npm run build-prod; npm run deploy"
   },
   "devDependencies": {
     "esbuild": "^0.8.17",
