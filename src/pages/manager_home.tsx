@@ -14,7 +14,7 @@ const SessionOverviewWrapper = styled('div', {
   transform: 'translateX(-16px)',
 
   '&:hover': {
-    border: '2px solid var(--color-peach)',
+    border: '2px solid $peach',
     borderRadius: 8,
     cursor: 'pointer',
   },
