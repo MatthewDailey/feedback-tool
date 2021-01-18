@@ -12,15 +12,16 @@ const SessionOverviewWrapper = styled('div', {
   padding: 14,
   border: '2px solid transparent',
   transform: 'translateX(-16px)',
+  display: 'inline-block',
 
   '&:hover': {
-    border: '2px solid $peach',
     borderRadius: 8,
     cursor: 'pointer',
+    textDecoration: 'underline'
   },
 })
 
-const FeedbackSessionOverview = (props: { key: string, sessionId: string }) => {
+const FeedbackSessionOverview = (props: { key?: string, sessionId: string }) => {
   const session = useSession(props.sessionId)
   const history = useHistory()
 
@@ -58,8 +59,12 @@ export const ManagerHome = () => {
       <Spacer multiple={2} direction='y' />
       <Button buttonSize="large" onClick={() => history.push("/new-session")}>Start a new Feedback Session</Button>
       <Spacer multiple={2} direction='y' />
-      <div className="sessionOverviewsHolder">
-        {sessionIdsOrderedByCreatedAt.map(id => <FeedbackSessionOverview sessionId={id} key={id} />)}
+      <div>
+        {sessionIdsOrderedByCreatedAt.map(id =>
+          <div key={id}>
+            <FeedbackSessionOverview sessionId={id} />
+          </div>
+        )}
       </div>
     </Wrapper>
   )
