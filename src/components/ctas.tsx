@@ -17,7 +17,6 @@ export const Button = styled('button', {
 
   "&:enabled:hover": {
     cursor: 'pointer',
-    border: '$borderWidth solid $dark',
   },
   "&:enabled:focus": {
     border: '$borderWidth solid $dark'
