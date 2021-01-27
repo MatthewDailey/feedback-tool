@@ -6,6 +6,7 @@ import { ShowIfSignedIn } from "../lib/auth"
 import { Spacer } from "./spacer"
 import { Link } from "./ctas"
 import { styled } from './styled'
+import { TooltipArrow, TooltipContent, TooltipRoot, TooltipTrigger } from "./tooltip"
 
 const LoginButton = () => {
   const firebase = useFirebase()
@@ -28,7 +29,18 @@ const AvatarImg = styled('img', {
 const Avatar = () => {
   const profile = useSelector(state => state.firebase.auth)
   const url = profile?.photoURL
-  return url && <AvatarImg src={url} alt={`${profile?.displayName} (${profile?.email})`}/>
+  const profileStr = `${profile?.displayName} (${profile?.email})`
+  return url && (
+    <TooltipRoot>
+      <TooltipTrigger>
+        <AvatarImg src={url} alt={profileStr}/>
+      </TooltipTrigger>
+      <TooltipContent>
+        {`Signed in as ${profileStr}`}
+        <TooltipArrow />
+      </TooltipContent>
+    </TooltipRoot>
+  )
 }
 
 const HeaderWrapper = styled('div', {
