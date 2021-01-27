@@ -8,6 +8,10 @@ export const colors = {
   $peach: '#FFD6BA',
 }
 
+const breakpoints = {
+  sm: (rule) => `@media (max-width: 880px) { ${rule} }`,
+}
+
 export const { styled, css } = createStyled({
   prefix: '',
   tokens: {
@@ -20,6 +24,6 @@ export const { styled, css } = createStyled({
       $borderWidth: '2px',
     }
   },
-  breakpoints: {},
+  breakpoints,
   utils: {},
 });

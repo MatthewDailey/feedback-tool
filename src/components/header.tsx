@@ -34,6 +34,7 @@ const Avatar = () => {
 const HeaderWrapper = styled('div', {
   marginTop: 40,
   marginLeft: 40,
+  marginRight: 40,
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -41,34 +42,24 @@ const HeaderWrapper = styled('div', {
 
   h1: {
     userSelect: 'none',
-    fontWeight: "$heavy"
+    fontWeight: "$heavy",
+    fontSize: 12,
   },
   'h1:hover': {
     cursor: 'pointer',
   },
 
-  variants: {
-    auth: {
-      signedOut: {
-        h1: {
-          fontSize: 40,
-        }
-      },
-      signedIn: {
-        h1: {
-          fontSize: 12,
-        }
-      }
-    }
-  }
+  span: {
+    flex: 1,
+  },
 })
 
 const HeaderLoggedOut = () => {
   const history = useHistory()
   return (
-    <HeaderWrapper auth="signedOut">
+    <HeaderWrapper>
       <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
-      <Spacer direction='x' multiple={1} />
+      <span />
       <LoginButton />
     </HeaderWrapper>
   )
@@ -77,9 +68,9 @@ const HeaderLoggedOut = () => {
 const HeaderLoggedIn = () => {
   const history = useHistory()
   return (
-    <HeaderWrapper auth="signedIn">
+    <HeaderWrapper>
       <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
-      <Spacer direction='x' multiple={1} />
+      <span />
       <Avatar />
       <Spacer direction='x' multiple={1} />
       <LogoutButton />
