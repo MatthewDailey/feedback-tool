@@ -7,6 +7,8 @@ import { firebaseReducer } from "react-redux-firebase"
 
 firebase.initializeApp(firebaseConfig)
 
+firebase.auth().currentUser?.getIdToken()
+
 // Add firebase to reducers
 const rootReducer = combineReducers({
   firebase: firebaseReducer
