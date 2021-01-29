@@ -13,7 +13,7 @@ const StyledInput = styled('input', {
     inputSize: {
       large: {
         height: '40px',
-        width: '300px',
+        width: '200px',
         borderRadius: '8px',
         padding: '12px 16px',
       },
@@ -33,7 +33,8 @@ const Container = styled('div', {
 })
 
 const Label = styled('label', {
-  fontSize: '8px'
+  fontSize: '8px',
+  marginTop: 8,
 })
 
 export const TextInput = (props: {

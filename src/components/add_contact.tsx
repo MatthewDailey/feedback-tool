@@ -10,6 +10,7 @@ const AddContactWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'end',
+  flexWrap: "wrap",
 })
 
 export const AddContact = () => {

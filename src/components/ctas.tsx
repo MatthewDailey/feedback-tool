@@ -33,12 +33,13 @@ export const Button = styled('button', {
   variants: {
     buttonSize: {
       small: {
-        height: 24,
+        minHeight: 24,
         borderRadius: 4,
         padding: '4px 8px',
+        fontSize: 10,
       },
       large: {
-        height: 36,
+        minHeight: 36,
         paddingLeft: 22,
         paddingRight: 22,
         borderRadius: 8,
