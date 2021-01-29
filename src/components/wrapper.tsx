@@ -4,7 +4,7 @@ import { styled } from './styled'
 export const Wrapper = styled('div', {
   maxWidth: 800,
   margin: 'auto',
-  marginBottom: 80,
+  paddingBottom: 80,
   color: "$dark",
 
   h1: {
@@ -25,6 +25,7 @@ export const Wrapper = styled('div', {
   p: {
     fontSize: 12,
     fontWeight: "$medium",
+    lineHeight: 1.4,
   },
 
   sm: {

@@ -14,6 +14,7 @@ import { ShowIfSignedIn } from "./lib/auth"
 import { Participant } from "./pages/participant"
 import { NewSession } from "./pages/new_session"
 import { ExistingSession } from "./pages/existing_session"
+import { Landing } from "./pages/landing"
 
 const Router = () => (
   <BrowserRouter>
@@ -29,7 +30,7 @@ const Router = () => (
         <ShowIfSignedIn signedIn={<ExistingSession />} signedOut={null} />
       </Route>
       <Route path="/">
-        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={null} />
+        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={<Landing />} />
       </Route>
     </Switch>
   </BrowserRouter>

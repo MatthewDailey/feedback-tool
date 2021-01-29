@@ -46,3 +46,31 @@ export const Button = styled('button', {
     }
   }
 })
+
+export const SignUpButton = styled('button', {
+  backgroundColor: '$peach',
+  border: '$borderWidth solid $peach',
+  color: '$dark',
+  fontWeight: "$heavy",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+
+  "&:enabled:hover": {
+    cursor: 'pointer',
+  },
+  "&:enabled:focus": {
+    border: '$borderWidth solid $dark'
+  },
+  "&:enabled:active": {
+    border: '$borderWidth) solid $dark',
+    backgroundColor: '$dark',
+    color: '$light',
+  },
+  "&:disabled": {
+    opacity: 0.5,
+  },
+
+  padding: 16,
+  borderRadius: 8,
+})

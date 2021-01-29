@@ -51,6 +51,7 @@ const HeaderWrapper = styled('div', {
   flexDirection: 'row',
   alignItems: 'center',
   color: "$dark",
+  height: 24,
 
   h1: {
     userSelect: 'none',
