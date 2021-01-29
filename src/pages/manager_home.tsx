@@ -5,7 +5,7 @@ import { useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
-import { styled } from '../components/styled'
+import { colors, styled } from '../components/styled'
 
 
 const SessionOverviewWrapper = styled('div', {
@@ -35,9 +35,9 @@ const FeedbackSessionOverview = (props: { key?: string, sessionId: string }) => 
       <Spacer multiple={1} direction="y" />
       <p>{`${session.value.feedbackSessionRequests.length} participants`}</p>
       <Spacer multiple={1} direction="y" />
-      <p>{`Created at: ${new Date(session.value.createdAt).toDateString()}`}</p>
+      <p>{`Created: ${new Date(session.value.createdAt).toDateString()}`}</p>
       <Spacer multiple={1} direction="y" />
-      <p>{`Finalized at: ${session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : 'Not yet.'}`}</p>
+      <p style={{ color: session.value.finalizedAt ? undefined : colors.$teal}}>{`Finalized: ${session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : 'Not yet.'}`}</p>
     </SessionOverviewWrapper>
   )
 }
