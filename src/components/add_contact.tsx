@@ -6,6 +6,13 @@ import { TextInput } from "./text_input"
 import { Spacer } from "./spacer"
 import { Button } from "./ctas"
 
+function isEmail(email: string): boolean {
+  const re1 = /^[^<>\/\\:?*"|]*$/
+  const re2 = /^[\u0000-\u007F]+$/
+  const re3 = /^[^@\s]+@[^@\s]+\.[^@\s]+$/i
+  return re1.test(email) && re2.test(email) && re3.test(email)
+}
+
 const AddContactWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'row',
@@ -32,7 +39,7 @@ export const AddContact = () => {
     }
   }
 
-  // TODO (mjd): validate inputs.
+  const inputsAreValid = isEmail(email) && name
 
   return (
     <AddContactWrapper>
@@ -40,7 +47,7 @@ export const AddContact = () => {
       <Spacer multiple={1} direction="x" />
       <TextInput size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
       <Spacer multiple={1} direction="x" />
-      <Button buttonSize="small" onClick={addContact}>Add Contact</Button>
+      <Button buttonSize="small" onClick={addContact} disabled={!inputsAreValid}>Add Contact</Button>
     </AddContactWrapper>
   )
 }
