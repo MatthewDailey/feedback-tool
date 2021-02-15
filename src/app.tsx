@@ -7,6 +7,7 @@ import {
   BrowserRouter,
   Switch,
   Route,
+  useHistory,
 } from "react-router-dom";
 import { Header } from "./components/header"
 import { ManagerHome } from "./pages/manager_home"
@@ -15,6 +16,12 @@ import { Participant } from "./pages/participant"
 import { NewSession } from "./pages/new_session"
 import { ExistingSession } from "./pages/existing_session"
 import { Landing } from "./pages/landing"
+
+const RedirectTo = (props: { route: string }) => {
+  const history = useHistory()
+  React.useEffect(() => history.push(props.route))
+  return null
+}
 
 const Router = () => (
   <BrowserRouter>
@@ -29,8 +36,11 @@ const Router = () => (
       <Route path="/session/:sessionId">
         <ShowIfSignedIn signedIn={<ExistingSession />} signedOut={null} />
       </Route>
+      <Route path="/app">
+        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={<RedirectTo route="/" />} />
+      </Route>
       <Route path="/">
-        <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={<Landing />} />
+        <Landing />
       </Route>
     </Switch>
   </BrowserRouter>

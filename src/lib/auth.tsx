@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import { isLoaded, useFirebaseConnect } from "react-redux-firebase"
+import { isLoaded, useFirebase, useFirebaseConnect } from "react-redux-firebase"
 import { User } from "./models"
+import { useHistory } from 'react-router-dom'
 import { firebaseConfig } from "../config/current_config"
 
 declare var gapi: any;
@@ -55,11 +56,18 @@ export const useUser = (): User|null => {
   return { uid: profile.uid, ...users[profile.uid] }
 }
 
-export const ShowIfSignedIn = (props: { signedIn: React.ReactElement|null, signedOut: React.ReactElement|null }) => {
+export const useLogin = () => {
+  const firebase = useFirebase()
+  const history = useHistory()
+
+  return () => firebase.login({ provider: 'google', type: 'popup' }).then(() => history.push('/app'))
+}
+
+export const ShowIfSignedIn = (props: { signedIn: React.ReactElement|null, signedOut: React.ReactElement|null, loading?: React.ReactElement }) => {
   const profile = useSelector(state => state.firebase.auth)
 
   if (!profile.isLoaded) {
-    return null
+    return props.loading ? props.loading : null
   }
 
   if (profile.isEmpty) {
