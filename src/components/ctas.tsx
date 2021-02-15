@@ -48,7 +48,7 @@ export const Button = styled('button', {
   }
 })
 
-export const SignUpButton = styled('button', {
+export const PrimaryCta = styled('button', {
   backgroundColor: '$peach',
   border: '$borderWidth solid $peach',
   color: '$dark',

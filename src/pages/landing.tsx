@@ -1,14 +1,44 @@
 import * as React from 'react'
 import { Wrapper } from "../components/wrapper"
 import { Spacer } from "../components/spacer"
-import { SignUpButton } from "../components/ctas"
-import { useFirebase } from "react-redux-firebase"
-import { useLogin } from "../lib/auth"
+import { PrimaryCta } from "../components/ctas"
+import { ShowIfSignedIn, useLogin, useUser } from "../lib/auth"
+import { useHistory } from 'react-router-dom'
+
+const GoogleSvg = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M15.4883 6.54545H8.17821V9.63636H12.386C11.9937 11.6 10.3534 12.7273 8.17821 12.7273C5.61077 12.7273 3.54255 10.6182 3.54255 8C3.54255 5.38182 5.61077 3.27273 8.17821 3.27273C9.28364 3.27273 10.2821 3.67273 11.0666 4.32727L13.3488 2C11.9581 0.763636 10.1751 0 8.17821 0C3.82783 0 0.333252 3.56364 0.333252 8C0.333252 12.4364 3.82783 16 8.17821 16C12.1007 16 15.6666 13.0909 15.6666 8C15.6666 7.52727 15.5953 7.01818 15.4883 6.54545Z"
+      fill="currentColor" />
+  </svg>
+)
+
+const SignUp = () => {
+  const login = useLogin()
+  return (
+    <PrimaryCta onClick={login}>
+      <GoogleSvg />
+      <Spacer multiple={1} direction="x" />
+      Sign up with Google
+    </PrimaryCta>
+  )
+}
+
+const GoToApp = () => {
+  const history = useHistory()
+  const user = useUser()
+  const buttonText = user ? `Enter the app as ${user.displayName}` : 'Enter the app'
+  return (
+    <PrimaryCta onClick={() => history.push('/app')}>
+      <GoogleSvg />
+      <Spacer multiple={1} direction="x" />
+      {buttonText}
+    </PrimaryCta>
+  )
+}
 
 
 export const Landing = () => {
-  const login = useLogin()
-
   return (
     <Wrapper>
       <Spacer direction="y" multiple={3} />
@@ -22,15 +52,7 @@ export const Landing = () => {
 
       <Spacer direction="y" multiple={3} />
 
-      <SignUpButton onClick={login}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M15.4883 6.54545H8.17821V9.63636H12.386C11.9937 11.6 10.3534 12.7273 8.17821 12.7273C5.61077 12.7273 3.54255 10.6182 3.54255 8C3.54255 5.38182 5.61077 3.27273 8.17821 3.27273C9.28364 3.27273 10.2821 3.67273 11.0666 4.32727L13.3488 2C11.9581 0.763636 10.1751 0 8.17821 0C3.82783 0 0.333252 3.56364 0.333252 8C0.333252 12.4364 3.82783 16 8.17821 16C12.1007 16 15.6666 13.0909 15.6666 8C15.6666 7.52727 15.5953 7.01818 15.4883 6.54545Z"
-            fill="currentColor" />
-        </svg>
-        <Spacer multiple={1} direction="x" />
-        Sign up with Google
-      </SignUpButton>
+      <ShowIfSignedIn signedIn={<GoToApp />} signedOut={<SignUp />} loading={<SignUp />} />
 
       <Spacer direction="y" multiple={5} />
 
