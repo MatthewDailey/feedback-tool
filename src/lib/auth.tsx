@@ -6,39 +6,39 @@ import { firebaseConfig } from "../config/current_config"
 
 declare var gapi: any;
 
-export function loadGoogleClient() {
-  gapi.load('client:auth2', () => {
-    console.log('loaded google client')
-
-    // Array of API discovery doc URLs for APIs used by the quickstart
-    var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-
-    // Authorization scopes required by the API; multiple scopes can be
-    // included, separated by spaces.
-    var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-
-    gapi.client.init({
-      apiKey: firebaseConfig.apiKey,
-      clientId: firebaseConfig.clientId,
-      discoveryDocs: DISCOVERY_DOCS,
-      scope : SCOPES,
-    }).then(function() {
-      const GoogleAuth = gapi.auth2.getAuthInstance();
-      GoogleAuth.isSignedIn.listen((data) => {
-        gapi.client.request({
-          'path': 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-        }).then(function(response) {
-          console.log(response.result);
-        }, function(reason) {
-          console.log('Error: ' + reason.result.error.message);
-        })
-      });
-
-      GoogleAuth.signIn()
-    });
-
-  })
-}
+// export function loadGoogleClient() {
+//   gapi.load('client:auth2', () => {
+//     console.log('loaded google client')
+//
+//     // Array of API discovery doc URLs for APIs used by the quickstart
+//     var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+//
+//     // Authorization scopes required by the API; multiple scopes can be
+//     // included, separated by spaces.
+//     var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+//
+//     gapi.client.init({
+//       apiKey: firebaseConfig.apiKey,
+//       clientId: firebaseConfig.clientId,
+//       discoveryDocs: DISCOVERY_DOCS,
+//       scope : SCOPES,
+//     }).then(function() {
+//       const GoogleAuth = gapi.auth2.getAuthInstance();
+//       GoogleAuth.isSignedIn.listen((data) => {
+//         gapi.client.request({
+//           'path': 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
+//         }).then(function(response) {
+//           console.log(response.result);
+//         }, function(reason) {
+//           console.log('Error: ' + reason.result.error.message);
+//         })
+//       });
+//
+//       GoogleAuth.signIn()
+//     });
+//
+//   })
+// }
 
 // Manually get calendar access. Note API was only enabled in dev so will need to enable in prod if want to provide.
 // window.calRequest = loadGoogleClient
