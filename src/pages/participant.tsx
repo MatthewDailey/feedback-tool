@@ -13,15 +13,27 @@ const Finalized = (props: { request: FeedbackSessionRequest}) => {
   const request = props.request
   return (
     <>
+      <p>The pairings for this feedback session have been finalized. The next step is for each person in a pair to schedule a 30 minute meeting to deliver feedback (2 meetings per pair).</p>
+      <Spacer multiple={1} direction="y" />
+      <p>You should schedule two separate meetings so that each meeting can be focussed on helping one individual grow. It's important to separate the meetings because hearing and giving feedback can both be emotionally taxing. We'd like to space out that burden to make it easier for everyone.</p>
+      <Spacer multiple={1} direction="y" />
       <p>
-        {`Invited by ${request.sessionOwnerName} (${request.sessionOwnerEmail}) on ${new Date(request.sessionCreatedAt).toDateString()}.`}
+        {`You (${props.request.requesteeEmail}) were invited by ${request.sessionOwnerName} (${request.sessionOwnerEmail}) on ${new Date(request.sessionCreatedAt).toDateString()}.`}
         {request.finalizedAt && ` Pairings finalized on ${new Date(request.finalizedAt).toDateString()}.`}
       </p>
+      <Spacer multiple={3} direction="y" />
+      <h3>Some feedback tips</h3>
+      <Spacer multiple={1} direction="y" />
+      <p>1. Feedback is a conversation and when you're giving feedback you only have one side of the story. Be humble and be open to being wrong.</p>
+      <Spacer multiple={1} direction="y" />
+      <p>2. Be specific! The more specific you are, the more helpful you will be.</p>
+      <Spacer multiple={1} direction="y" />
+      <p>3. Feedback can be hard and scary for both the giver and the receiver! You're having these conversations even though it's hard because you care about your working relationship and want to help each other grow.</p>
       <Spacer multiple={3} direction="y" />
       {
         request.finalizedPairs ?
           <>
-            <h3>You should schedule a 30 min feedback conversation to delivery feedback to these people:</h3>
+            <h2>Schedule 30 minutes to deliver feedback to these people</h2>
             <Spacer multiple={1} direction="y" />
             {
               request.finalizedPairs.map((contact) => (
@@ -59,10 +71,14 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
 
   return (
     <>
-      <p>{`Invited by ${props.request.sessionOwnerName} (${props.request.sessionOwnerEmail}) on ${new Date(props.request.sessionCreatedAt).toDateString()}.`}</p>
-      <Spacer multiple={3} direction="y" />
-      <h3>Who would you like to have 30 min feedback conversation with?</h3>
+      <p>Please choose any number of people below that you would like to have direct feedback conversations with and if they choose you as well, you'll be paired. Only the session organizer ({props.request.sessionOwnerName}) can see your selection so please don't feel any pressure to have conversations that might be too time consuming or uncomfortable!</p>
       <Spacer multiple={1} direction="y" />
+      <p>Once you're paired, you'll schedule a 30 minute meeting with each person you're paired with to deliver your positive and critical feedback. They'll do the same so for each person you pair with you're committing to two 30 minute feedback meetings.</p>
+      <Spacer multiple={1} direction="y" />
+      <p>{`You (${props.request.requesteeEmail}) were invited by ${props.request.sessionOwnerName} (${props.request.sessionOwnerEmail}) on ${new Date(props.request.sessionCreatedAt).toDateString()}.`}</p>
+      <Spacer multiple={3} direction="y" />
+      <h2>Who would you like to have feedback conversations with?</h2>
+      <Spacer multiple={2} direction="y" />
       {
         props.request.participants.map((contact) => contact.email !== props.request.requesteeEmail && (
           <div key={contact.email}>
@@ -77,6 +93,7 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
           </ div>
         ))
       }
+
       <Spacer multiple={2} direction="y" />
       {
         props.request.requested ? <p>Your requested pairs have been submitted. You'll be notified when {props.request.sessionOwnerName} finalizes the pairings.</p>
