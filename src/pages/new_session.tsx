@@ -93,6 +93,7 @@ export const NewSession = () => {
               onChanged={(checked: boolean) => {
                 setContactIdToChecked({...contactIdToChecked, [id]: checked})
               }}
+              remove={() => firebase.remove(`users/${user.uid}/contacts/${id}`)}
             />
             <Spacer multiple={1} direction="y" />
           </React.Fragment>

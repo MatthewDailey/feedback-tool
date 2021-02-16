@@ -38,7 +38,7 @@ const StyledCheckbox = styled(Checkbox.Root, {
   }
 });
 
-export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void }) => {
+export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void, remove?: () => void }) => {
   const label = `${props.contact.name} (${props.contact.email})`
   const toggleCheck = () => props.onChanged(!props.isChecked)
   return (
@@ -53,6 +53,7 @@ export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contac
       </StyledCheckbox>
       <Spacer multiple={1} direction="x" />
       <label onClick={toggleCheck}>{label}</label>
+      { props.remove && <div onClick={props.remove}>X</div>}
     </CheckboxWrapper>
   )
 }
