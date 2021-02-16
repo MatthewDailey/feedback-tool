@@ -1,12 +1,14 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
+import * as Dialog from '@radix-ui/react-dialog';
 import { useParams } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { Contact, FeedbackSession, FeedbackSessionRequest } from "../lib/models"
 import { useFeedbackSessionRequest, useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
-import { Button } from "../components/ctas"
+import { Button, Link } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
-import { colors } from "../components/styled"
+import { colors, styled } from "../components/styled"
 
 
 const finalizeSession = async (firebase: ExtendedFirebaseInstance,
@@ -64,13 +66,6 @@ const FinalizeButton = (props: { sessionId: string, requestIds: string[] }) => {
   return <Button buttonSize="large" onClick={() => finalizeSession(firebase, session.value!, requestValues)}>Finalize Session</Button>
 }
 
-const contactList = (contacts?: Contact[]) => {
-  if (!contacts) {
-    return "None."
-  }
-  return contacts.map((contact, index) => `${contact.name} (${contact.email})${index === contacts.length - 1 ? '' : ','}`)
-}
-
 const RightArrowSvg = () => (
   <svg width="17" height="9" viewBox="0 0 17 9" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M16.3536 4.85355C16.5488 4.65829 16.5488 4.34171 16.3536 4.14645L13.1716 0.964466C12.9763 0.769204 12.6597 0.769204 12.4645 0.964466C12.2692 1.15973 12.2692 1.47631 12.4645 1.67157L15.2929 4.5L12.4645 7.32843C12.2692 7.52369 12.2692 7.84027 12.4645 8.03553C12.6597 8.2308 12.9763 8.2308 13.1716 8.03553L16.3536 4.85355ZM0 5L16 5V4L0 4L0 5Z" fill={colors.$dark}/>
@@ -124,6 +119,66 @@ const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: str
   )
 }
 
+const StyledOverlay = styled(Dialog.Overlay, {
+  backgroundColor: 'rgba(0, 0, 0, .15)',
+  position: 'fixed',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+});
+const StyledContent = styled(Dialog.Content, {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  minWidth: 200,
+  maxWidth: 'fit-content',
+  maxHeight: '85vh',
+  padding: 20,
+  marginTop: '-5vh',
+  backgroundColor: '$light',
+  borderRadius: 6,
+  '&:focus': {
+    outline: 'none',
+  },
+});
+const ButtonFooter = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+})
+
+const DeleteSession = (props: { ownerId: string, sessionId: string }) => {
+  const firebase = useFirebase()
+  const history = useHistory()
+
+  const deleteSession = () => {
+    firebase.remove(`feedbackSessions/${props.sessionId}`)
+    firebase.remove(`users/${props.ownerId}/feedbackSessions/${props.sessionId}`)
+    history.push('/app')
+  }
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger as={Link}>Delete session</Dialog.Trigger>
+      <StyledOverlay />
+      <StyledContent>
+        <h2>Delete session?</h2>
+        <Spacer multiple={1} direction="y" />
+        <p>This will permanently delete the feedback session. This action cannot be undone.</p>
+        <Spacer multiple={1} direction="y" />
+        <ButtonFooter>
+          <Dialog.Close as={Link}>Cancel</Dialog.Close>
+          <Spacer multiple={1} direction="x" />
+          <Dialog.Close as={Button} buttonSize="small" onClick={deleteSession}>Delete session</Dialog.Close>
+        </ButtonFooter>
+      </StyledContent>
+    </Dialog.Root>
+  );
+}
+
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
@@ -149,7 +204,12 @@ export const ExistingSession = () => {
       <Spacer multiple={1} direction="y" />
       <RequestsList requestIds={requestIds} feedbackSession={session.value} />
       <Spacer multiple={2} direction="y" />
-      {!session.value.finalizedAt && <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />}
+      {!session.value.finalizedAt && <>
+        <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />
+        <Spacer multiple={2} direction="y" />
+      </>}
+      <DeleteSession ownerId={session.value.ownerId} sessionId={session.value.id} />
+      <Spacer multiple={2} direction="y" />
     </Wrapper>
   )
 }

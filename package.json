@@ -10,6 +10,7 @@
     "compile-and-build": "npm run build-dev; npm run compile",
     "watch": "fswatch -0 -r ./src/ | xargs -0 -n 1 -I {} npm run compile-and-build",
     "develop": "npm run compile-and-build; npm run watch",
+    "develop-fast": "npm run build-dev; fswatch -0 -r ./src/ | xargs -0 -n 1 -I {} npm run build-dev",
     "use-dev": "npm run firebase -- use feedback-tool-dev; cp src/config/firebase_config_dev.ts src/config/current_config.ts",
     "use-prod": "npm run firebase -- use feedback-tool-prod; cp src/config/firebase_config_prod.ts src/config/current_config.ts",
     "deploy": "npm run firebase -- deploy",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "0.0.1",
+    "@radix-ui/react-dialog": "0.0.6",
     "@radix-ui/react-icons": "^1.0.1",
     "@radix-ui/react-tooltip": "0.0.2",
     "@stitches/react": "0.0.2",
