@@ -28,13 +28,13 @@ const Router = () => (
     <Header />
     <Switch>
       <Route path="/new-session">
-        <ShowIfSignedIn signedIn={<NewSession />} signedOut={null} />
+        <ShowIfSignedIn signedIn={<NewSession />} signedOut={<RedirectTo route="/" />} />
       </Route>
       <Route path="/participant/:feedbackSessionRequestId">
         <Participant />
       </Route>
       <Route path="/session/:sessionId">
-        <ShowIfSignedIn signedIn={<ExistingSession />} signedOut={null} />
+        <ShowIfSignedIn signedIn={<ExistingSession />} signedOut={<RedirectTo route="/" />} />
       </Route>
       <Route path="/app">
         <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={<RedirectTo route="/" />} />
