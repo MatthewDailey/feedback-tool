@@ -3,17 +3,24 @@ import { Spacer } from "./spacer"
 import { Contact } from "../lib/models"
 import { colors, styled } from './styled'
 import * as Checkbox from '@radix-ui/react-checkbox'
-import { CheckIcon } from '@radix-ui/react-icons'
+import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
 
 const CheckboxWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'row',
 
-  label: {
-    '&:hover': {
-      cursor: 'pointer'
+  '& > .removeCta': {
+    display: "none",
+  },
+
+  '&:hover' : {
+    '.removeCta': {
+      display: "inline",
+      '&:hover': {
+        cursor: 'pointer'
+      }
     }
-  }
+  },
 })
 
 const StyledCheckbox = styled(Checkbox.Root, {
@@ -53,7 +60,8 @@ export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contac
       </StyledCheckbox>
       <Spacer multiple={1} direction="x" />
       <label onClick={toggleCheck}>{label}</label>
-      { props.remove && <div onClick={props.remove}>X</div>}
+      <Spacer multiple={1} direction="x" />
+      { props.remove && <div className="removeCta" onClick={props.remove}><Cross2Icon/></div>}
     </CheckboxWrapper>
   )
 }
