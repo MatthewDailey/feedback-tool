@@ -81,16 +81,16 @@ const HeaderLoggedOut = () => {
 const HeaderLoggedIn = () => {
   const history = useHistory()
   const location = useLocation()
-  const isHomePage = location.pathname === '/'
+  const isNotApp = location.pathname !== '/app'
 
   return (
     <HeaderWrapper>
       <h1 onClick={() => history.push('/')}>Feedback.Gifts</h1>
       <span />
       {
-        isHomePage && (
+        isNotApp && (
           <>
-            <Link onClick={() => history.push('/app')}>Go to app</Link>
+            <Link onClick={() => history.push('/app')}>Go to app home</Link>
             <Spacer direction='x' multiple={1} />
           </>
         )

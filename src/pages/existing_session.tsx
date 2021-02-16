@@ -6,6 +6,7 @@ import { useFeedbackSessionRequest, useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
+import { colors } from "../components/styled"
 
 
 const finalizeSession = async (firebase: ExtendedFirebaseInstance,
@@ -70,6 +71,28 @@ const contactList = (contacts?: Contact[]) => {
   return contacts.map((contact, index) => `${contact.name} (${contact.email})${index === contacts.length - 1 ? '' : ','}`)
 }
 
+const RightArrowSvg = () => (
+  <svg width="17" height="9" viewBox="0 0 17 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16.3536 4.85355C16.5488 4.65829 16.5488 4.34171 16.3536 4.14645L13.1716 0.964466C12.9763 0.769204 12.6597 0.769204 12.4645 0.964466C12.2692 1.15973 12.2692 1.47631 12.4645 1.67157L15.2929 4.5L12.4645 7.32843C12.2692 7.52369 12.2692 7.84027 12.4645 8.03553C12.6597 8.2308 12.9763 8.2308 13.1716 8.03553L16.3536 4.85355ZM0 5L16 5V4L0 4L0 5Z" fill={colors.$dark}/>
+  </svg>
+)
+
+const ContactList = (props: { contacts?: Contact[]}) => {
+  if (!props.contacts) {
+    return <p>None.</p>
+  }
+  return (
+    <>
+      {props.contacts.map(contact => (
+          <div key={contact.email}>
+            <RightArrowSvg /> {contact.name} ({contact.email})
+          </div>
+        ))
+      }
+    </>
+  )
+}
+
 // Note: broke this out from ExistingSession to avoid additional hooks on render.
 const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: string[] }) => {
   const requests = props.requestIds.map((id) => useFeedbackSessionRequest(id))
@@ -81,10 +104,18 @@ const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: str
 
           return (
             <div key={request.value.requesteeEmail}>
-              <p>{request.value.requesteeName} ({request.value.requesteeEmail})</p>
-              <p>Requested pairs: {contactList(request.value.requestedPairs)}</p>
-              {request.value.finalizedPairs && <p>finalized pairs: {contactList(request.value.finalizedPairs)}</p>}
-              <Spacer multiple={1} direction="y" />
+              <h3>{request.value.requesteeName} ({request.value.requesteeEmail})</h3>
+              <Spacer multiple={0.5} direction="y" />
+              <p>Requested:</p>
+              <ContactList contacts={request.value.requestedPairs} />
+              <Spacer multiple={0.5} direction="y" />
+              {request.value.finalizedPairs && (
+                <>
+                  <p>Finalized:</p>
+                  <ContactList contacts={request.value.finalizedPairs} />
+                </>
+              )}
+              <Spacer multiple={2} direction="y" />
             </div>
           )
         })
@@ -114,7 +145,7 @@ export const ExistingSession = () => {
       <Spacer multiple={1} direction="y" />
       <p>Finalized at: {session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : "Not yet."}</p>
       <Spacer multiple={3} direction="y" />
-      <h3>Participants</h3>
+      <h2>Participants</h2>
       <Spacer multiple={1} direction="y" />
       <RequestsList requestIds={requestIds} feedbackSession={session.value} />
       <Spacer multiple={2} direction="y" />

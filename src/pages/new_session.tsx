@@ -69,7 +69,7 @@ export const NewSession = () => {
 
     createNewSession(firebase, user, sessionName, participants)
       .then(sessionId => history.push(`/session/${sessionId}`))
-      .catch(e => `Failed to create new session ${e}`)
+      .catch(e => console.error(`Failed to create new session ${e}`))
       .then(() => setIsCreatingSession(false))
   }
 
