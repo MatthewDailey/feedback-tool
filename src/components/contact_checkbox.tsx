@@ -8,6 +8,12 @@ import { CheckIcon } from '@radix-ui/react-icons'
 const CheckboxWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'row',
+
+  label: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  }
 })
 
 const StyledCheckbox = styled(Checkbox.Root, {
@@ -34,18 +40,19 @@ const StyledCheckbox = styled(Checkbox.Root, {
 
 export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void }) => {
   const label = `${props.contact.name} (${props.contact.email})`
+  const toggleCheck = () => props.onChanged(!props.isChecked)
   return (
     <CheckboxWrapper>
       <StyledCheckbox
         checked={props.isChecked}
-        onCheckedChange={() => props.onChanged(!props.isChecked)}
+        onCheckedChange={toggleCheck}
       >
         <Checkbox.Indicator>
           {props.isChecked && <CheckIcon color={colors.$dark} />}
         </Checkbox.Indicator>
       </StyledCheckbox>
       <Spacer multiple={1} direction="x" />
-      <label>{label}</label>
+      <label onClick={toggleCheck}>{label}</label>
     </CheckboxWrapper>
   )
 }
