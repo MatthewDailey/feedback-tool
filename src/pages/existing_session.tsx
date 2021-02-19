@@ -101,8 +101,14 @@ const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: str
             <div key={request.value.requesteeEmail}>
               <h3>{request.value.requesteeName} ({request.value.requesteeEmail})</h3>
               <Spacer multiple={0.5} direction="y" />
-              <p>Requested:</p>
-              <ContactList contacts={request.value.requestedPairs} />
+              {request.value.requested ?
+                (
+                  <>
+                    <p>Requested:</p>
+                    <ContactList contacts={request.value.requestedPairs} />
+                  </>
+                ) : <p>Pairings not yet requested.</p>
+              }
               <Spacer multiple={0.5} direction="y" />
               {request.value.finalizedPairs && (
                 <>
