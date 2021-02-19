@@ -10,13 +10,13 @@ import { TooltipArrow, TooltipContent, TooltipRoot, TooltipTrigger } from "./too
 
 const LoginButton = () => {
   const login = useLogin()
-  return <Link onClick={login}>log in</Link>
+  return <Link onClick={login}>Log in</Link>
 }
 
 const LogoutButton = () => {
   const firebase = useFirebase()
   return (
-    <Link onClick={() => firebase.logout()}>sign out</Link>
+    <Link onClick={() => firebase.logout()}>Sign out</Link>
   )
 }
 

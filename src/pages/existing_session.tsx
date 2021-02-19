@@ -99,7 +99,10 @@ const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: str
 
           return (
             <div key={request.value.requesteeEmail}>
-              <h3>{request.value.requesteeName} ({request.value.requesteeEmail})</h3>
+              <span>
+                <h3>{request.value.requesteeName} ({request.value.requesteeEmail})</h3>
+                <Link href={`/participant/${request.value.id}`}>Participant link</Link>
+              </span>
               <Spacer multiple={0.5} direction="y" />
               {request.value.requested ?
                 (

@@ -3,6 +3,7 @@ import { styled } from './styled'
 
 export const Link = styled('a', {
   color: '$teal',
+  textDecoration: 'none',
 
   '&:hover': {
     cursor: 'pointer',
