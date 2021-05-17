@@ -181,7 +181,7 @@ const DeleteSession = (props: { ownerId: string, sessionId: string }) => {
         <ButtonFooter>
           <Dialog.Close as={Link}>Cancel</Dialog.Close>
           <Spacer multiple={1} direction="x" />
-          <Dialog.Close as={Button} buttonSize="small" onClick={deleteSession}>Delete session</Dialog.Close>
+          <Button buttonSize="small" onClick={deleteSession}>Delete session</Button>
         </ButtonFooter>
       </StyledContent>
     </Dialog.Root>
