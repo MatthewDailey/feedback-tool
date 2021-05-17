@@ -37,7 +37,6 @@ export const Button = styled('button', {
         minHeight: 24,
         borderRadius: 4,
         padding: '4px 8px',
-        fontSize: 10,
       },
       large: {
         minHeight: 36,
