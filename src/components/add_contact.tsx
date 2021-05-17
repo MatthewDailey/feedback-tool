@@ -20,7 +20,7 @@ const AddContactWrapper = styled('div', {
   flexWrap: "wrap",
 })
 
-export const AddContact = () => {
+export const AddContact = (props: { onNewContact?: (contactKey : string) => void }) => {
   const firebase = useFirebase()
   const user = useUser()
   const [name, setName] = React.useState('')
@@ -31,7 +31,11 @@ export const AddContact = () => {
   const addContact = () => {
     if (name && email) {
       firebase.push(`users/${user.uid}/contacts`, { name, email })
-        .then(() => {
+        .then((result) => {
+          if (props.onNewContact && result.key) {
+            props.onNewContact(result.key)
+          }
+
           setName('')
           setEmail('')
         })

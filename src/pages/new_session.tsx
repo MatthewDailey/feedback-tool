@@ -73,6 +73,9 @@ export const NewSession = () => {
       .then(() => setIsCreatingSession(false))
   }
 
+  const setChecked = (contactId: string, checked: boolean) =>
+    setContactIdToChecked({...contactIdToChecked, [contactId]: checked})
+
   return (
     <Wrapper>
       <Spacer multiple={2} direction="y" />
@@ -90,16 +93,14 @@ export const NewSession = () => {
             <ContactCheckbox
               isChecked={!!contactIdToChecked[id]}
               contact={contacts[id]}
-              onChanged={(checked: boolean) => {
-                setContactIdToChecked({...contactIdToChecked, [id]: checked})
-              }}
+              onChanged={(checked: boolean) => setChecked(id, checked)}
               remove={() => firebase.remove(`users/${user.uid}/contacts/${id}`)}
             />
             <Spacer multiple={1} direction="y" />
           </React.Fragment>
         )
       })}
-      <AddContact />
+      <AddContact onNewContact={(contactId) => setChecked(contactId, true)} />
       <Spacer multiple={3} direction="y" />
       <Button buttonSize="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
         Create new feedback session and notify participants
