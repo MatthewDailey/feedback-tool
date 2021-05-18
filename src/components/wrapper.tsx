@@ -2,7 +2,7 @@ import * as React from 'react'
 import { styled } from './styled'
 
 export const Wrapper = styled('div', {
-  maxWidth: 800,
+  maxWidth: 700,
   margin: 'auto',
   paddingBottom: 80,
   color: "$dark",
@@ -18,12 +18,12 @@ export const Wrapper = styled('div', {
   },
 
   h3: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "$heavy"
   },
 
   p: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "$medium",
     lineHeight: 1.5,
   },

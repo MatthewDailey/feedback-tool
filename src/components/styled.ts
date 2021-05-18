@@ -9,7 +9,7 @@ export const colors = {
 }
 
 const breakpoints = {
-  sm: (rule) => `@media (max-width: 880px) { ${rule} }`,
+  sm: (rule) => `@media (max-width: 780px) { ${rule} }`,
 }
 
 export const { styled, css } = createStyled({
