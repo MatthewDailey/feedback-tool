@@ -25,10 +25,14 @@ export const Wrapper = styled('div', {
   p: {
     fontSize: 12,
     fontWeight: "$medium",
-    lineHeight: 1.4,
+    lineHeight: 1.5,
   },
 
   sm: {
     margin: '0px 40px',
   }
+})
+
+export const TextContainer = styled('div', {
+  maxWidth: 500,
 })
