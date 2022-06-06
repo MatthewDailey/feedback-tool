@@ -66,5 +66,8 @@ will serve the app on `localhost:5000`
 
 ## TODO Maker Week June 2022
 - allow team and role
-- CSV upload to start a new session
+- CSV upload to start a new session with team and role
+- features for managing very large sessions (filter by, sort by)
+- features for participating in very large session (filter by, sort by)
+- add collaborator on session id
 - set up cron email to make sure SendGrid account is not deactivated.
