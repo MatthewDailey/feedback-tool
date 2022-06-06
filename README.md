@@ -63,3 +63,9 @@ To deploy, run `npm run deploy-dev` or `npm run deploy-prod`.
 Check out the repo and run `npm install`. To developer locally, run `npm run develop` to start a development
 build and file watch then in a separate terminal run `npm run serve` to start local firebase server that 
 will serve the app on `localhost:5000`
+
+## TODO Maker Week June 2022
+- set up new SendGrid account
+- email security for SendGrid
+- allow team and role
+- CSV upload to start a new session
