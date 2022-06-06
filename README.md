@@ -66,6 +66,7 @@ will serve the app on `localhost:5000`
 
 ## TODO Maker Week June 2022
 - set up new SendGrid account
+  - update API key on prod to match that from dev
 - email security for SendGrid
 - allow team and role
 - CSV upload to start a new session

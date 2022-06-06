@@ -15,7 +15,7 @@ const sendEmail = async (to: string, subject: string, text: string) => {
   }
   return SendGrid.send(msg)
     .then(() => functions.logger.info('Sent email!'))
-    .catch(e => functions.logger.error('Error sending email', e))
+    .catch(e => functions.logger.error('Error sending email', e, e?.body?.errors))
 }
 
 export const notifyParticipantSessionOpened = functions.database.ref('/feedbackSessionRequests/{id}')
