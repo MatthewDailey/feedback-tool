@@ -1,48 +1,17 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
+import { useFirebase } from "react-redux-firebase"
 import { useUser } from "../lib/auth"
 import { ContactCheckbox } from "../components/contact_checkbox"
 import { Input } from "../components/text_input"
 import { Spacer } from "../components/spacer"
-import { Contact, User } from "../lib/models"
+import { Contact } from "../lib/models"
 import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
-import { styled } from '../components/styled'
 import { AddContact } from "../components/add_contact"
+import { createNewSession } from "../lib/new_session"
 
-
-const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
-  const createdAt: number = Date.now()
-  // push feedbackSession
-  const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened', createdAt })
-  const sessionId = sessionPushResult.key
-
-  await firebase.set(`users/${owner.uid}/feedbackSessions/${sessionId}`, createdAt)
-
-  // push feedbackSessionRequests
-  const feedbackSessionRequestsPromise = participants.map(contact =>
-    firebase.push('feedbackSessionRequests', {
-      sessionId,
-      sessionName,
-      sessionOwnerName: owner.displayName,
-      sessionOwnerEmail: owner.email,
-      sessionCreatedAt: createdAt,
-      requesteeName: contact.name,
-      requesteeEmail: contact.email,
-      participants,
-      responseEmails: []
-    }))
-  const requestPushResults = await Promise.all(feedbackSessionRequestsPromise)
-
-  // Update session with list of requests
-  const updateResults = await firebase.update(`feedbackSessions/${sessionId}`, { feedbackSessionRequests: requestPushResults.map(r => r.key)})
-
-  return sessionId
-}
-
-
-export const NewSession = () => {
+export const NewSessionFromContacts = () => {
   const firebase = useFirebase()
   const history = useHistory()
   const user = useUser()

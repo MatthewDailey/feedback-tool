@@ -13,7 +13,7 @@ import { Header } from "./components/header"
 import { ManagerHome } from "./pages/manager_home"
 import { ShowIfSignedIn } from "./lib/auth"
 import { Participant } from "./pages/participant"
-import { NewSession } from "./pages/new_session"
+import { NewSessionFromContacts } from "./pages/new_session"
 import { ExistingSession } from "./pages/existing_session"
 import { Landing } from "./pages/landing"
 
@@ -28,7 +28,7 @@ const Router = () => (
     <Header />
     <Switch>
       <Route path="/new-session">
-        <ShowIfSignedIn signedIn={<NewSession />} signedOut={<RedirectTo route="/" />} />
+        <ShowIfSignedIn signedIn={<NewSessionFromContacts />} signedOut={<RedirectTo route="/" />} />
       </Route>
       <Route path="/participant/:feedbackSessionRequestId">
         <Participant />

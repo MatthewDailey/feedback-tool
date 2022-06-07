@@ -1,0 +1,32 @@
+import { ExtendedFirebaseInstance } from "react-redux-firebase"
+import { Contact, User } from "./models"
+
+
+export const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
+  const createdAt: number = Date.now()
+  // push feedbackSession
+  const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened', createdAt })
+  const sessionId = sessionPushResult.key
+
+  await firebase.set(`users/${owner.uid}/feedbackSessions/${sessionId}`, createdAt)
+
+  // push feedbackSessionRequests
+  const feedbackSessionRequestsPromise = participants.map(contact =>
+    firebase.push('feedbackSessionRequests', {
+      sessionId,
+      sessionName,
+      sessionOwnerName: owner.displayName,
+      sessionOwnerEmail: owner.email,
+      sessionCreatedAt: createdAt,
+      requesteeName: contact.name,
+      requesteeEmail: contact.email,
+      participants,
+      responseEmails: []
+    }))
+  const requestPushResults = await Promise.all(feedbackSessionRequestsPromise)
+
+  // Update session with list of requests
+  const updateResults = await firebase.update(`feedbackSessions/${sessionId}`, { feedbackSessionRequests: requestPushResults.map(r => r.key)})
+
+  return sessionId
+}
