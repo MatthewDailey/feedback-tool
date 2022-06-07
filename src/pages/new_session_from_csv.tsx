@@ -10,6 +10,7 @@ import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
 import { AddContact } from "../components/add_contact"
 import { createNewSession } from "../lib/new_session"
+import { FileInput } from "../components/file_input"
 
 export const NewSessionFromCsv = () => {
   const firebase = useFirebase()
@@ -51,7 +52,7 @@ export const NewSessionFromCsv = () => {
       <h3>Participants</h3>
       <Spacer multiple={1} direction="y" />
 
-      <TextInput value={undefined} onChange={(file) => console.log(file)} size="large" />
+      <FileInput onChange={(file) => console.log(file)} label="Upload CSV with participants with name, email, role, team" />
 
       {participants.map(participant => {
         return (
