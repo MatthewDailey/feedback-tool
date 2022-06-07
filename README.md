@@ -65,7 +65,7 @@ build and file watch then in a separate terminal run `npm run serve` to start lo
 will serve the app on `localhost:5000`
 
 ## TODO Maker Week June 2022
-- features for participating in very large session (filter by, sort by)
 - features for managing very existing large sessions (filter by, sort by)
+- fix security issues
 - add collaborator on session id
 - set up cron email to make sure SendGrid account is not deactivated.
