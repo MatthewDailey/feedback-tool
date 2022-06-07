@@ -10,12 +10,9 @@ import { Button, Link } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
 import { colors, styled } from "../components/styled"
 
-
-const finalizeSession = async (firebase: ExtendedFirebaseInstance,
-                               feedbackSession: FeedbackSession,
-                               feedbackSessionRequests: FeedbackSessionRequest[]) => {
+type FeedbackPairing = { [email:string]: Contact[]|undefined }
+const computeEmailToPairing = (feedbackSessionRequests: FeedbackSessionRequest[]): FeedbackPairing => {
   const emailToPairings: { [email:string]: Contact[]|undefined } = {}
-  const finalizedAt: number = Date.now()
 
   // Add requested pairings from others
   feedbackSessionRequests.forEach(request => {
@@ -37,6 +34,14 @@ const finalizeSession = async (firebase: ExtendedFirebaseInstance,
     emailToPairings[request.requesteeEmail] = finalPairs
   })
 
+  return emailToPairings
+}
+
+const finalizeSession = async (firebase: ExtendedFirebaseInstance,
+                               feedbackSession: FeedbackSession,
+                               feedbackSessionRequests: FeedbackSessionRequest[]) => {
+  const finalizedAt: number = Date.now()
+  const emailToPairings = computeEmailToPairing(feedbackSessionRequests)
   // update requests with finalize pairings
   await Promise.all(feedbackSessionRequests
     .map(request => firebase.update(`feedbackSessionRequests/${request.id}`,
@@ -188,16 +193,32 @@ const DeleteSession = (props: { ownerId: string, sessionId: string }) => {
   );
 }
 
-type ComputeStat = (requests: FeedbackSessionRequest[], filter?: { team?: string, role?: string }) => number
-const percentComplete: ComputeStat = (requests, filter) => {
-  const includedRequests = requests.filter(r =>
-    !filter || ((!filter.role || filter.role === r.requesteeRole)
-      && (!filter.team || filter.team === r.requesteeTeam)))
+type RequestFilter = { team?: string, role?: string }
+
+const filterRequests = (requests: FeedbackSessionRequest[], filter: RequestFilter) => {
+  return requests.filter(r =>
+    (!filter.role || filter.role === r.requesteeRole)
+    && (!filter.team || filter.team === r.requesteeTeam))
+}
+const percentComplete = (requests: FeedbackSessionRequest[],
+                         filter: RequestFilter = {}) => {
+  const includedRequests = filterRequests(requests, filter)
   const completedRequestsCount = includedRequests.filter(r => r.requested).length
   return (completedRequestsCount / includedRequests.length) * 100
 }
-const percentRequestingWithoutMatch: ComputeStat = (requests, filter) => 0
-
+const percentRequestingWithoutMatch = (requests: FeedbackSessionRequest[],
+                                       pairings: FeedbackPairing,
+                                       filter: RequestFilter = {}) => {
+  const includedRequestsThatAreCompleted = filterRequests(requests, filter)
+    .filter(r => r.requested)
+  console.log(requests)
+  console.log(includedRequestsThatAreCompleted)
+  console.log(pairings)
+  const completedWithoutMatchCount = includedRequestsThatAreCompleted
+    .filter(r => !pairings[r.requesteeEmail]?.length)
+    .length
+  return (completedWithoutMatchCount / includedRequestsThatAreCompleted.length) * 100
+}
 
 const OverallStats = (props: {requestIds: string[]}) => {
   const requestsLoads = props.requestIds.map((id) => useFeedbackSessionRequest(id))
@@ -207,11 +228,12 @@ const OverallStats = (props: {requestIds: string[]}) => {
       requests.push(r.value)
     }
   })
+  const pairings = computeEmailToPairing(requests)
   return (
     <>
       <h2>Overall Stats</h2>
       <p>Complete: {percentComplete(requests).toFixed(0)}%</p>
-      <p>Requesting without match: {percentRequestingWithoutMatch(requests)}%</p>
+      <p>Requesting without match: {percentRequestingWithoutMatch(requests, pairings).toFixed(0)}%</p>
       <Spacer multiple={1} direction="y" />
     </>
   )
