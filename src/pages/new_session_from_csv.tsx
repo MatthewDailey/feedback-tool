@@ -11,6 +11,7 @@ import { Wrapper } from "../components/wrapper"
 import { AddContact } from "../components/add_contact"
 import { createNewSession } from "../lib/new_session"
 import { CsvFileInput } from "../components/file_input"
+import { ContactListItem } from "../components/contact_listitem"
 
 export const NewSessionFromCsv = () => {
   const firebase = useFirebase()
@@ -66,10 +67,7 @@ export const NewSessionFromCsv = () => {
       {participants.map(participant => {
         return (
           <React.Fragment key={`frag-${participant.email}`}>
-            <ContactCheckbox
-              isChecked={!!contactIdToChecked[participant.email]}
-              contact={participant}
-            />
+            <ContactListItem contact={participant} />
             <Spacer multiple={1} direction="y" />
           </React.Fragment>
         )
