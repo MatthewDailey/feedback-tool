@@ -2,7 +2,7 @@ import * as React from 'react'
 import { styled } from "./styled"
 import { useFirebase } from "react-redux-firebase"
 import { useUser } from "../lib/auth"
-import { TextInput } from "./text_input"
+import { Input } from "./text_input"
 import { Spacer } from "./spacer"
 import { Button } from "./ctas"
 
@@ -47,9 +47,9 @@ export const AddContact = (props: { onNewContact?: (contactKey : string) => void
 
   return (
     <AddContactWrapper>
-      <TextInput size="small" label="Name" hint="John Doe" value={name} onChange={(v) => setName(v)}/>
+      <Input size="small" label="Name" hint="John Doe" value={name} onChange={(v) => setName(v)}/>
       <Spacer multiple={1} direction="x" />
-      <TextInput size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
+      <Input size="small" label="Email" hint="John@figma.com" value={email} onChange={(e) => setEmail(e)}/>
       <Spacer multiple={1} direction="x" />
       <Button buttonSize="small" onClick={addContact} disabled={!inputsAreValid}>Add Contact</Button>
     </AddContactWrapper>

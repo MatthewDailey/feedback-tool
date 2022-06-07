@@ -37,12 +37,13 @@ const Label = styled('label', {
   marginTop: 8,
 })
 
-export const TextInput = (props: {
+export const Input = (props: {
   label?: string,
   hint?: string,
   value: string|undefined,
   onChange: (val: string) => void,
-  size: 'large'|'small'
+  size: 'large'|'small',
+  type?: string
 }) => {
   const inputId = `${props.label}-input`
   return (
@@ -50,7 +51,7 @@ export const TextInput = (props: {
       {props.label && <Label htmlFor={inputId}>{props.label}</Label>}
       <StyledInput
         id={inputId}
-        type="text"
+        type={props.type || "text"}
         value={props.value}
         placeholder={props.hint}
         onChange={(e) => props.onChange(e.target.value)}
@@ -59,3 +60,4 @@ export const TextInput = (props: {
     </Container>
   )
 }
+

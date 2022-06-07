@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { useUser } from "../lib/auth"
 import { ContactCheckbox } from "../components/contact_checkbox"
-import { TextInput } from "../components/text_input"
+import { Input } from "../components/text_input"
 import { Spacer } from "../components/spacer"
 import { Contact, User } from "../lib/models"
 import { Button } from "../components/ctas"
@@ -83,7 +83,7 @@ export const NewSession = () => {
       <Spacer multiple={2} direction="y" />
       <h3>Session Name</h3>
       <Spacer multiple={1} direction="y" />
-      <TextInput size="large" value={sessionName} onChange={(e) => setSessionName(e)} hint="Q3 Perf Review"/>
+      <Input size="large" value={sessionName} onChange={(e) => setSessionName(e)} hint="Q3 Perf Review"/>
       <Spacer multiple={2} direction="y" />
       <h3>Participants</h3>
       <Spacer multiple={1} direction="y" />
