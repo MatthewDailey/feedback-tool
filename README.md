@@ -66,6 +66,5 @@ will serve the app on `localhost:5000`
 
 ## TODO Maker Week June 2022
 - features for managing very existing large sessions (filter by, sort by)
-- fix security issues
 - add collaborator on session id
 - set up cron email to make sure SendGrid account is not deactivated.
