@@ -11,25 +11,19 @@ import { Wrapper } from "../components/wrapper"
 import { AddContact } from "../components/add_contact"
 import { createNewSession } from "../lib/new_session"
 
-export const NewSessionFromContacts = () => {
+export const NewSessionFromCsv = () => {
   const firebase = useFirebase()
   const history = useHistory()
   const user = useUser()
   const [contactIdToChecked, setContactIdToChecked] = React.useState({})
   const [sessionName, setSessionName] = React.useState('')
   const [isCreatingSession, setIsCreatingSession] = React.useState(false)
+  const [participants, setParticipants] = React.useState<Contact[]>([])
 
   if (!user) {
     return null
   }
-  const contacts: {[key: string]: Contact} = user.contacts || {}
 
-  const contactIds = Object.keys(contacts)
-    .sort((a, b) => contacts[a].name.localeCompare(contacts[b].name))
-
-  const participants: Contact[] = Object.keys(contacts)
-    .filter(id => contactIdToChecked[id])
-    .map(id => contacts[id])
   const validInputs = sessionName && participants.length > 1
 
   const createSession = () => {
@@ -56,29 +50,30 @@ export const NewSessionFromContacts = () => {
       <Spacer multiple={2} direction="y" />
       <h3>Participants</h3>
       <Spacer multiple={1} direction="y" />
-      {contactIds.map(id => {
-        return contacts[id] && (
-          <React.Fragment key={`frag-${id}`}>
+
+      <TextInput value={undefined} onChange={(file) => console.log(file)} size="large" />
+
+      {participants.map(participant => {
+        return (
+          <React.Fragment key={`frag-${participant.email}`}>
             <ContactCheckbox
-              isChecked={!!contactIdToChecked[id]}
-              contact={contacts[id]}
-              onChanged={(checked: boolean) => setChecked(id, checked)}
-              remove={() => firebase.remove(`users/${user.uid}/contacts/${id}`)}
+              isChecked={!!contactIdToChecked[participant.email]}
+              contact={participant}
+              onChanged={(checked: boolean) => setChecked(participant.email, checked)}
             />
             <Spacer multiple={1} direction="y" />
           </React.Fragment>
         )
       })}
-      <AddContact onNewContact={(contactId) => setChecked(contactId, true)} />
       <Spacer multiple={3} direction="y" />
       <Button buttonSize="large" onClick={createSession} disabled={isCreatingSession || !validInputs}>
         Create new feedback session and notify participants
       </Button>
       {!validInputs &&
-        <>
-          <Spacer multiple={1} direction="y" />
-          <p>To create a new session, you must provide a name and select at least 2 participants.</p>
-        </>
+      <>
+        <Spacer multiple={1} direction="y" />
+        <p>To create a new session, you must provide a name and select at least 2 participants.</p>
+      </>
       }
     </Wrapper>
   )
