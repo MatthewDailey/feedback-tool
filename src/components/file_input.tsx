@@ -24,11 +24,29 @@ const Label = styled('label', {
   marginTop: 8,
 })
 
-export const FileInput = (props: {
+async function parseCsvFile<T>(files: FileList|null): Promise<T[]> {
+  if (!files) {
+    return []
+  }
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.addEventListener('error', (e) => {
+      reject(e)
+    })
+    reader.addEventListener('load', (e) => {
+      console.log("RESULT", reader.result)
+      resolve([])
+    })
+    reader.readAsText(files[0])
+  })
+}
+
+export function CsvFileInput<T>(props: {
   label?: string,
   hint?: string,
-  onChange: (val: string) => void,
-}) => {
+  onChange: (val: T[]) => void,
+}) {
   const inputId = `${props.label}-input`
   return (
     <Container>
@@ -37,7 +55,10 @@ export const FileInput = (props: {
         id={inputId}
         type={"file"}
         placeholder={props.hint}
-        onChange={(e) => props.onChange(e.target.value)}
+        onChange={(e) => parseCsvFile<T>(e.target.files)
+          .then((values => props.onChange(values)))
+          .catch(console.error)}
+        accept={".csv"}
       />
     </Container>
   )
