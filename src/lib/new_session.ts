@@ -20,6 +20,8 @@ export const createNewSession = async (firebase: ExtendedFirebaseInstance, owner
       sessionCreatedAt: createdAt,
       requesteeName: contact.name,
       requesteeEmail: contact.email,
+      requesteeRole: contact.role,
+      requesteeTeam: contact.team,
       participants,
       responseEmails: []
     }))

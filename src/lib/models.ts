@@ -27,6 +27,7 @@ export type FeedbackSession = {
 
 
 export type FeedbackSessionRequest = {
+
   id: string
   sessionId: string,
   sessionName: string,
@@ -36,6 +37,8 @@ export type FeedbackSessionRequest = {
   requested?: boolean
   requesteeName: string,
   requesteeEmail: string,
+  requesteeRole?: string,
+  requesteeTeam?: string,
   participants: Contact[],
   requestedPairs?: Contact[],
   finalizedPairs: Contact[] | undefined,

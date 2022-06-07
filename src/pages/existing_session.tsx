@@ -89,7 +89,7 @@ const ContactList = (props: { contacts?: Contact[]}) => {
 }
 
 // Note: broke this out from ExistingSession to avoid additional hooks on render.
-const RequestsList = (props: { feedbackSession: FeedbackSession, requestIds: string[] }) => {
+const RequestsList = (props: { requestIds: string[] }) => {
   const requests = props.requestIds.map((id) => useFeedbackSessionRequest(id))
   return (
     <div>
@@ -188,6 +188,46 @@ const DeleteSession = (props: { ownerId: string, sessionId: string }) => {
   );
 }
 
+type ComputeStat = (requests: FeedbackSessionRequest[], filter?: { team?: string, role?: string }) => number
+const percentComplete: ComputeStat = (requests, filter) => {
+  const includedRequests = requests.filter(r =>
+    !filter || ((!filter.role || filter.role === r.requesteeRole)
+      && (!filter.team || filter.team === r.requesteeTeam)))
+  const completedRequestsCount = includedRequests.filter(r => r.requested).length
+  return (completedRequestsCount / includedRequests.length) * 100
+}
+const percentRequestingWithoutMatch: ComputeStat = (requests, filter) => 0
+
+
+const OverallStats = (props: {requestIds: string[]}) => {
+  const requestsLoads = props.requestIds.map((id) => useFeedbackSessionRequest(id))
+  const requests: FeedbackSessionRequest[] = []
+  requestsLoads.forEach(r => {
+    if (r.loaded && r.value) {
+      requests.push(r.value)
+    }
+  })
+  return (
+    <>
+      <h2>Overall Stats</h2>
+      <p>Complete: {percentComplete(requests).toFixed(0)}%</p>
+      <p>Requesting without match: {percentRequestingWithoutMatch(requests)}%</p>
+      <Spacer multiple={1} direction="y" />
+    </>
+  )
+}
+
+// TODO (mjd):
+// overall stats:
+// - % complete overall, by team, by role
+// - % requesting without match
+// tools:
+// - % complete of visible
+// - % with at least one match
+// - filter to requested and with no match
+// - filter to team
+// - filter to role
+// - text filter
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
@@ -209,9 +249,11 @@ export const ExistingSession = () => {
       <Spacer multiple={1} direction="y" />
       <p>Finalized at: {session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : "Not yet."}</p>
       <Spacer multiple={3} direction="y" />
+      <OverallStats requestIds={requestIds} />
+      <Spacer multiple={3} direction="y" />
       <h2>Participants</h2>
       <Spacer multiple={1} direction="y" />
-      <RequestsList requestIds={requestIds} feedbackSession={session.value} />
+      <RequestsList requestIds={requestIds} />
       <Spacer multiple={2} direction="y" />
       {!session.value.finalizedAt && <>
         <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />

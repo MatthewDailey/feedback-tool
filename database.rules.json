@@ -66,6 +66,8 @@
         "sessionCreatedAt": { ".validate":  "newData.isNumber()" },
         "requesteeName": { ".validate": "newData.isString()" },
         "requesteeEmail": { ".validate": "newData.isString()" },
+        "requesteeRole": { ".validate": "newData.isString()" },
+        "requesteeTeam": { ".validate": "newData.isString()" },
 
         "participants": {
           ".validate": "newData.hasChildren()",
@@ -84,6 +86,8 @@
           "$id": {
             "name": { ".validate": "newData.isString()"},
             "email": { ".validate": "newData.isString()"},
+            "team": { ".validate": "newData.isString()"},
+            "role": { ".validate": "newData.isString()"},
             "$other": { ".validate": false }
           }
         },
@@ -97,6 +101,8 @@
           "$id": {
             "name": { ".validate": "newData.isString()"},
             "email": { ".validate": "newData.isString()"},
+            "team": { ".validate": "newData.isString()"},
+            "role": { ".validate": "newData.isString()"},
             "$other": { ".validate": false }
           }
         },
