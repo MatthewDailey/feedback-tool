@@ -40,6 +40,13 @@ export const NewSessionFromCsv = () => {
   const setChecked = (contactId: string, checked: boolean) =>
     setContactIdToChecked({...contactIdToChecked, [contactId]: checked})
 
+  const importContactListFromCsv = (contacts: Contact[]) => {
+    setParticipants(contacts)
+    const newContactIdToChecked = {}
+    contacts.forEach(c => newContactIdToChecked[c.email] = true)
+    setContactIdToChecked(newContactIdToChecked)
+  }
+
   return (
     <Wrapper>
       <Spacer multiple={2} direction="y" />
@@ -49,18 +56,19 @@ export const NewSessionFromCsv = () => {
       <Spacer multiple={1} direction="y" />
       <TextInput size="large" value={sessionName} onChange={(e) => setSessionName(e)} hint="Q3 Perf Review"/>
       <Spacer multiple={2} direction="y" />
+
+      <h3>Upload participant list</h3>
+      <CsvFileInput<Contact> onChange={importContactListFromCsv} label="Upload CSV with participants with name, email, role, team" />
+      <Spacer multiple={2} direction="y" />
+
       <h3>Participants</h3>
       <Spacer multiple={1} direction="y" />
-
-      <CsvFileInput<Contact> onChange={(file) => console.log(file)} label="Upload CSV with participants with name, email, role, team" />
-
       {participants.map(participant => {
         return (
           <React.Fragment key={`frag-${participant.email}`}>
             <ContactCheckbox
               isChecked={!!contactIdToChecked[participant.email]}
               contact={participant}
-              onChanged={(checked: boolean) => setChecked(participant.email, checked)}
             />
             <Spacer multiple={1} direction="y" />
           </React.Fragment>
