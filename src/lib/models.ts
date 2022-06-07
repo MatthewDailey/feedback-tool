@@ -1,4 +1,9 @@
-export type Contact = { name: string, email: string }
+export type Contact = {
+  name: string,
+  email: string,
+  team?: string,
+  role?: string
+}
 
 export type User = {
   uid: string
@@ -8,13 +13,13 @@ export type User = {
   feedbackSessions: { [sessionId: string]: number }
 }
 
-export type Load<T> = { loaded: false } | { loaded: true, value: null|T }
+export type Load<T> = { loaded: false } | { loaded: true, value: null | T }
 
 export type FeedbackSession = {
   id: string,
   name: string,
   ownerId: string,
-  status: 'opened'|'finalized'
+  status: 'opened' | 'finalized'
   createdAt: number
   finalizedAt: number
   feedbackSessionRequests: string[]
@@ -33,6 +38,6 @@ export type FeedbackSessionRequest = {
   requesteeEmail: string,
   participants: Contact[],
   requestedPairs?: Contact[],
-  finalizedPairs: Contact[]|undefined,
+  finalizedPairs: Contact[] | undefined,
   finalizedAt?: number
 }
