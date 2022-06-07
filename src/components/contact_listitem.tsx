@@ -13,8 +13,6 @@ const Wrapper = styled('div', {
 export const ContactListItem = (props: {key?: string, contact: Contact}) => {
   const label = `${props.contact.name} (${props.contact.email}, ${props.contact.team}, ${props.contact.role})`
   return (
-    <Wrapper>
-      <label>{label}</label>
-    </Wrapper>
+    <p>{label}</p>
   )
 }

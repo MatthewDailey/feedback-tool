@@ -17,7 +17,6 @@ export const NewSessionFromCsv = () => {
   const firebase = useFirebase()
   const history = useHistory()
   const user = useUser()
-  const [contactIdToChecked, setContactIdToChecked] = React.useState({})
   const [sessionName, setSessionName] = React.useState('')
   const [isCreatingSession, setIsCreatingSession] = React.useState(false)
   const [participants, setParticipants] = React.useState<Contact[]>([])
@@ -38,16 +37,6 @@ export const NewSessionFromCsv = () => {
       .then(() => setIsCreatingSession(false))
   }
 
-  const setChecked = (contactId: string, checked: boolean) =>
-    setContactIdToChecked({...contactIdToChecked, [contactId]: checked})
-
-  const importContactListFromCsv = (contacts: Contact[]) => {
-    setParticipants(contacts)
-    const newContactIdToChecked = {}
-    contacts.forEach(c => newContactIdToChecked[c.email] = true)
-    setContactIdToChecked(newContactIdToChecked)
-  }
-
   return (
     <Wrapper>
       <Spacer multiple={2} direction="y" />
@@ -59,10 +48,11 @@ export const NewSessionFromCsv = () => {
       <Spacer multiple={2} direction="y" />
 
       <h3>Upload participant list</h3>
-      <CsvFileInput<Contact> onChange={importContactListFromCsv} label="Upload CSV with participants with name, email, role, team" />
+      <CsvFileInput<Contact> onChange={setParticipants} label="Upload CSV with participants with name, email, role, team" />
       <Spacer multiple={2} direction="y" />
 
-      <h3>Participants</h3>
+      <h3>Participants {participants.length > 0 && `(${participants.length})`}</h3>
+
       <Spacer multiple={1} direction="y" />
       {participants.map(participant => {
         return (
@@ -79,7 +69,7 @@ export const NewSessionFromCsv = () => {
       {!validInputs &&
       <>
         <Spacer multiple={1} direction="y" />
-        <p>To create a new session, you must provide a name and select at least 2 participants.</p>
+        <p>To create a new session, you must provide a name and at least 2 participants.</p>
       </>
       }
     </Wrapper>
