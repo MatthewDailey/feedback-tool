@@ -8,6 +8,9 @@ import { useFeedbackSessionRequest } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
+import { ContactListItem } from "../components/contact_listitem"
+import { TextInput } from "../components/text_input"
+import { filterParticipants } from "../lib/contacts"
 
 const Finalized = (props: { request: FeedbackSessionRequest}) => {
   const request = props.request
@@ -38,7 +41,7 @@ const Finalized = (props: { request: FeedbackSessionRequest}) => {
             {
               request.finalizedPairs.map((contact) => (
                 <div key={contact.email}>
-                  <p>{`${contact.name} (${contact.email})`}</p>
+                  <ContactListItem contact={contact} />
                   <Spacer multiple={1} direction="y" />
                 </ div>
               ))
@@ -55,6 +58,7 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
   const [emailToChecked, setEmailToChecked] = React.useState({})
   const firebase = useFirebase()
   const { feedbackSessionRequestId }  = useParams()
+  const [filterString, setFilterString] = React.useState('')
 
   const setEmailCheckedProvider = (email: string) => (checked: boolean) => {
     setEmailToChecked({...emailToChecked, [email]: checked})
@@ -69,6 +73,7 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
 
   const requestedPairs = props.request.requestedPairs || []
 
+  let visibleParticipants = filterParticipants(props.request.participants, filterString)
   return (
     <>
       <p>Please choose any number of people below that you would like to have direct feedback conversations with and if they choose you as well, you'll be paired. Only the session organizer ({props.request.sessionOwnerName}) can see your selection so please don't feel any pressure to have conversations that might be too time consuming or uncomfortable!</p>
@@ -79,19 +84,32 @@ const Requested = (props: { request: FeedbackSessionRequest }) => {
       <Spacer multiple={3} direction="y" />
       <h2>Who would you like to have feedback conversations with?</h2>
       <Spacer multiple={2} direction="y" />
+      <h3>Filter participants</h3>
+      <Spacer multiple={1} direction="y" />
+      <TextInput
+        value={filterString}
+        onChange={setFilterString}
+        size="small"
+        hint='eg. "growth"'
+      />
+      <Spacer multiple={2} direction="y" />
+      <h3>Participants ({props.request.participants.filter(c => emailToChecked[c.email]).length} feedback conversation selected)</h3>
+      <Spacer multiple={1} direction="y" />
       {
-        props.request.participants.map((contact) => contact.email !== props.request.requesteeEmail && (
-          <div key={contact.email}>
-            <ContactCheckbox
-              isChecked={
-                emailToChecked[contact.email]
-                || requestedPairs.some(requestedPair => requestedPair.email === contact.email)}
-              contact={contact}
-              onChanged={setEmailCheckedProvider(contact.email)}
-            />
-            <Spacer multiple={1} direction="y" />
-          </ div>
-        ))
+        visibleParticipants.length > 0 ?
+          visibleParticipants.map((contact) => contact.email !== props.request.requesteeEmail && (
+            <div key={contact.email}>
+              <ContactCheckbox
+                isChecked={
+                  emailToChecked[contact.email]
+                  || requestedPairs.some(requestedPair => requestedPair.email === contact.email)}
+                contact={contact}
+                onChanged={setEmailCheckedProvider(contact.email)}
+              />
+              <Spacer multiple={1} direction="y" />
+            </ div>
+          ))
+          : <p>No participants match search filter "{filterString}".</p>
       }
 
       <Spacer multiple={2} direction="y" />
