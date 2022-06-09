@@ -46,10 +46,11 @@ export const notifyParticipantSessionFinalized = functions.database.ref('/feedba
     return Promise.resolve()
   }))
 
-export const sendgridAccountKeepAlive = functions.pubsub.schedule('every 5 minutes').onRun((context) => {
+export const sendgridAccountKeepAlive = functions.pubsub.schedule('every 5 minutes').onRun(() => {
   if (linkDomain.includes("feedback.gifts")) {
     return sendEmail("matthew.j.dailey@gmail.com",
       `Feedback.Gifts SendGrid Keep-Alive (${linkDomain})`,
       "Just a regular message to ensure SendGrid doesn't deactivate due to inactivity.")
   }
+  return Promise.resolve()
 })
