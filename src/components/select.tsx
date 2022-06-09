@@ -3,10 +3,10 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons"
 
 export const Select =
-  ({ children, ...props }) => {
+  React.forwardRef<HTMLButtonElement, SelectPrimitive.SelectProps>(({ children, ...props }, ref) => {
     return (
-      <SelectPrimitive.Root {...props}>
-        <SelectPrimitive.Trigger>
+      <SelectPrimitive.Root {...props} >
+        <SelectPrimitive.Trigger ref={ref}>
           <SelectPrimitive.Value />
           <SelectPrimitive.Icon>
             <ChevronDownIcon />
@@ -23,17 +23,17 @@ export const Select =
         </SelectPrimitive.Content>
       </SelectPrimitive.Root>
     );
-  }
+  })
 
-
-export const SelectItem = ({ children, value, ...props }) => {
+export const SelectItem = React.forwardRef<HTMLDivElement, SelectPrimitive.SelectItemProps>(
+  ({ children, ...props }, ref) => {
     return (
-      <SelectPrimitive.Item value={value} {...props}>
+      <SelectPrimitive.Item {...props} ref={ref}>
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
         <SelectPrimitive.ItemIndicator>
           <CheckIcon />
         </SelectPrimitive.ItemIndicator>
       </SelectPrimitive.Item>
     );
-  }
+  })
 

@@ -234,12 +234,14 @@ const FilterSelectors = (props: {requestIds: string[], filterTeam?: string, setF
   const allRoles = [...new Set(requests.map(r => r.requesteeRole))]
   const allTeams = [...new Set(requests.map(r => r.requesteeTeam))]
 
+  const defaultValue = "No team filter."
   return (
     <>
-      <Select defaultValue={"No team filter enabled."}>
+      <Select defaultValue={defaultValue}>
+        <SelectItem key={defaultValue} value={defaultValue}>{defaultValue}</SelectItem>
         {
           allTeams.map(team => (
-            <SelectItem key={team} value={team}>{team}</SelectItem>
+            team && <SelectItem key={team} value={team}>{team}</SelectItem>
           ))
         }
       </Select>
