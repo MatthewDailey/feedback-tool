@@ -229,6 +229,24 @@ const OverallStats = (props: {requestIds: string[]}) => {
   )
 }
 
+const FilterSelectors = (props: {requestIds: string[], filterTeam?: string, setFilterTeam, filterRole?: string, setFilterRole}) => {
+  const requests = useFeedbackSessionRequestList(props.requestIds)
+  const allRoles = [...new Set(requests.map(r => r.requesteeRole))]
+  const allTeams = [...new Set(requests.map(r => r.requesteeTeam))]
+
+  return (
+    <>
+      <Select defaultValue={"No team filter enabled."}>
+        {
+          allTeams.map(team => (
+            <SelectItem key={team} value={team}>{team}</SelectItem>
+          ))
+        }
+      </Select>
+    </>
+  )
+}
+
 // TODO (mjd):
 // overall stats:
 // - % complete overall, by team, by role
@@ -252,10 +270,6 @@ export const ExistingSession = () => {
 
   const requestIds = session.value?.feedbackSessionRequests || []
 
-  const allTeams = {}
-  // const requests = useFeedbackSessionRequestList(requestIds)
-  // requests.forEach(r => {if(r.requesteeTeam) {allTeams[r.requesteeTeam] = true}})
-
   return (
     <Wrapper>
       <Spacer multiple={2} direction='y' />
@@ -267,13 +281,13 @@ export const ExistingSession = () => {
       <Spacer multiple={1} direction="y" />
       <p>Finalized at: {session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : "Not yet."}</p>
 
-      <Select defaultValue={"None selected"}>
-        {
-          Object.keys(allTeams).map(team => (
-            <SelectItem value={team}>{team}</SelectItem>
-          ))
-        }
-      </Select>
+      <FilterSelectors
+        requestIds={requestIds}
+        setFilterTeam={setFilterTeam}
+        setFilterRole={setFilterRole}
+        filterTeam={filterTeam}
+        filterRole={filterRole}
+      />
 
       <Spacer multiple={3} direction="y" />
       <OverallStats requestIds={requestIds} />
