@@ -211,9 +211,6 @@ const percentRequestingWithoutMatch = (requests: FeedbackSessionRequest[],
                                        filter: RequestFilter = {}) => {
   const includedRequestsThatAreCompleted = filterRequests(requests, filter)
     .filter(r => r.requested)
-  console.log(requests)
-  console.log(includedRequestsThatAreCompleted)
-  console.log(pairings)
   const completedWithoutMatchCount = includedRequestsThatAreCompleted
     .filter(r => !pairings[r.requesteeEmail]?.length)
     .length
