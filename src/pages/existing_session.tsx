@@ -12,6 +12,8 @@ import { colors, styled } from "../components/styled"
 import { Select, SelectItem } from "../components/select"
 import { useUser } from "../lib/auth"
 import { FilterSelectors } from "../components/request_filter"
+import { TextInput } from "../components/text_input"
+import { contactMatchQuery } from "../lib/contacts"
 
 type FeedbackPairing = { [email:string]: Contact[]|undefined }
 const computeEmailToPairing = (feedbackSessionRequests: FeedbackSessionRequest[]): FeedbackPairing => {
@@ -194,12 +196,18 @@ const DeleteSession = (props: { ownerId: string, sessionId: string }) => {
   );
 }
 
-type RequestFilter = { team?: string, role?: string }
+type RequestFilter = { team?: string, role?: string, query?: string }
 
 const filterRequests = (requests: FeedbackSessionRequest[], filter: RequestFilter) => {
   return requests.filter(r =>
     (!filter.role || filter.role === r.requesteeRole)
-    && (!filter.team || filter.team === r.requesteeTeam))
+    && (!filter.team || filter.team === r.requesteeTeam)
+    && (!filter.query || contactMatchQuery({
+      name: r.requesteeName,
+      email: r.requesteeEmail,
+      role: r.requesteeRole,
+      team: r.requesteeTeam
+    }, filter.query)))
 }
 const percentComplete = (requests: FeedbackSessionRequest[],
                          filter: RequestFilter = {}) => {
@@ -240,6 +248,7 @@ export const ExistingSession = () => {
   const user = useUser()
   const [filterTeam, setFilterTeam] = React.useState<string>("")
   const [filterRole, setFilterRole] = React.useState<string>("")
+  const [filterString, setFilterString] = React.useState('')
 
   if (!session.loaded ) {
     return null
@@ -250,7 +259,7 @@ export const ExistingSession = () => {
   }
 
   const requestIds = session.value?.feedbackSessionRequests || []
-  const filter: RequestFilter = {role: filterRole, team: filterTeam}
+  const filter: RequestFilter = {role: filterRole, team: filterTeam, query: filterString}
 
   return (
     <Wrapper>
@@ -266,6 +275,14 @@ export const ExistingSession = () => {
       <h2>Participants</h2>
       <Spacer multiple={1} direction="y" />
       <OverallStats requestIds={requestIds} filter={filter} />
+      <Spacer multiple={1} direction="y" />
+      <TextInput
+        value={filterString}
+        onChange={setFilterString}
+        size="small"
+        hint='eg. "growth"'
+        label="Filter participants"
+      />
       <Spacer multiple={1} direction="y" />
       <FilterSelectors
         requestIds={requestIds}
