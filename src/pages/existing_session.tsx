@@ -272,17 +272,6 @@ const FilterSelectors = (props: {requestIds: string[], filterTeam?: string, setF
   )
 }
 
-// TODO (mjd):
-// overall stats:
-// - % complete overall, by team, by role
-// - % requesting without match
-// tools:
-// - % complete of visible
-// - % with at least one match
-// - filter to requested and with no match
-// - filter to team
-// - filter to role
-// - text filter
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
