@@ -222,7 +222,12 @@ const OverallStats = (props: {requestIds: string[], filter: RequestFilter}) => {
   return (
     <>
       <p>Complete: {percentComplete(requests, props.filter).toFixed(0)}%</p>
-      <p>Requesting without match: {percentRequestingWithoutMatch(requests, pairings, props.filter).toFixed(0)}%</p>
+      <p>Requesting without match: {
+        requests.some(r => r.requested) ?
+          `${percentRequestingWithoutMatch(requests, pairings, props.filter).toFixed(0)}%`
+          : "No pairings requested yet."
+      }
+      </p>
     </>
   )
 }
@@ -290,7 +295,6 @@ export const ExistingSession = () => {
   const requestIds = session.value?.feedbackSessionRequests || []
   const filter: RequestFilter = {role: filterRole, team: filterTeam}
 
-  console.log(filter)
   return (
     <Wrapper>
       <Spacer multiple={2} direction='y' />
