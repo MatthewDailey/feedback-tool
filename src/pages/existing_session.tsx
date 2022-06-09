@@ -108,7 +108,7 @@ const RequestsList = (props: { requestIds: string[], filter: RequestFilter }) =>
           return (
             <div key={request.requesteeEmail}>
               <span>
-                <h3>{request.requesteeName} ({request.requesteeEmail})</h3>
+                <h3>{request.requesteeName} ({request.requesteeEmail} | {request.requesteeTeam} | {request.requesteeRole})</h3>
                 <Link href={`/participant/${request.id}`}>Participant link</Link>
               </span>
               <Spacer multiple={0.5} direction="y" />

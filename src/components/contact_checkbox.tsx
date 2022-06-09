@@ -46,7 +46,7 @@ const StyledCheckbox = styled(Checkbox.Root, {
 });
 
 export const ContactCheckbox = (props: {key?: string, isChecked: boolean, contact: Contact, onChanged: (checked: boolean) => void, remove?: () => void }) => {
-  const label = `${props.contact.name} (${props.contact.email}, ${props.contact.team}, ${props.contact.role})`
+  const label = `${props.contact.name} (${props.contact.email} | ${props.contact.team} | ${props.contact.role})`
   const toggleCheck = () => props.onChanged(!props.isChecked)
   return (
     <CheckboxWrapper>
