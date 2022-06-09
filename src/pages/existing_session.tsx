@@ -10,6 +10,7 @@ import { Button, Link } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
 import { colors, styled } from "../components/styled"
 import { Select, SelectItem } from "../components/select"
+import { useUser } from "../lib/auth"
 
 type FeedbackPairing = { [email:string]: Contact[]|undefined }
 const computeEmailToPairing = (feedbackSessionRequests: FeedbackSessionRequest[]): FeedbackPairing => {
@@ -285,11 +286,16 @@ const FilterSelectors = (props: {requestIds: string[], filterTeam?: string, setF
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
+  const user = useUser()
   const [filterTeam, setFilterTeam] = React.useState<string>("")
   const [filterRole, setFilterRole] = React.useState<string>("")
 
-  if (!session.loaded || session.value === null) {
+  if (!session.loaded ) {
     return null
+  }
+
+  if (session.value === null) {
+    return <Wrapper><p>No session with session ID: {sessionId}</p></Wrapper>
   }
 
   const requestIds = session.value?.feedbackSessionRequests || []
@@ -319,13 +325,19 @@ export const ExistingSession = () => {
       />
       <Spacer multiple={4} direction="y" />
       <RequestsList requestIds={requestIds} filter={filter} />
-      <Spacer multiple={4} direction="y" />
-      {!session.value.finalizedAt && <>
-        <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />
-        <Spacer multiple={2} direction="y" />
-      </>}
-      <DeleteSession ownerId={session.value.ownerId} sessionId={session.value.id} />
-      <Spacer multiple={2} direction="y" />
+      {
+        user && user.uid === session.value.ownerId && (
+          <>
+            <Spacer multiple={4} direction="y" />
+            {!session.value.finalizedAt && <>
+              <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />
+              <Spacer multiple={2} direction="y" />
+            </>}
+            <DeleteSession ownerId={session.value.ownerId} sessionId={session.value.id} />
+            <Spacer multiple={2} direction="y" />
+          </>
+        )
+      }
     </Wrapper>
   )
 }

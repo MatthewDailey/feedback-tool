@@ -33,7 +33,7 @@ const Router = () => (
         <Participant />
       </Route>
       <Route path="/session/:sessionId">
-        <ShowIfSignedIn signedIn={<ExistingSession />} signedOut={<RedirectTo route="/" />} />
+        <ExistingSession />
       </Route>
       <Route path="/app">
         <ShowIfSignedIn signedIn={<ManagerHome />} signedOut={<RedirectTo route="/" />} />

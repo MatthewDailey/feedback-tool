@@ -5,7 +5,14 @@ import { Contact, User } from "./models"
 export const createNewSession = async (firebase: ExtendedFirebaseInstance, owner: User, sessionName: string, participants: Contact[]) => {
   const createdAt: number = Date.now()
   // push feedbackSession
-  const sessionPushResult = await firebase.push('feedbackSessions', { ownerId: owner.uid, name: sessionName, status: 'opened', createdAt })
+  const sessionPushResult = await firebase.push('feedbackSessions', {
+    ownerId: owner.uid,
+    ownerName: owner.displayName,
+    ownerEmail: owner.email,
+    name: sessionName,
+    status: 'opened',
+    createdAt
+  })
   const sessionId = sessionPushResult.key
 
   await firebase.set(`users/${owner.uid}/feedbackSessions/${sessionId}`, createdAt)
