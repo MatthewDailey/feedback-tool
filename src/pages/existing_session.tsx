@@ -95,12 +95,12 @@ const ContactList = (props: { contacts?: Contact[]}) => {
 }
 
 // Note: broke this out from ExistingSession to avoid additional hooks on render.
-const RequestsList = (props: { requestIds: string[] }) => {
-  const requests = useFeedbackSessionRequestList(props.requestIds)
+const RequestsList = (props: { requestIds: string[], filter: RequestFilter }) => {
+  const requests = filterRequests(useFeedbackSessionRequestList(props.requestIds), props.filter)
   return (
     <div>
       {
-        requests.map(request => {
+        requests.map((request, i) => {
           return (
             <div key={request.requesteeEmail}>
               <span>
@@ -123,7 +123,7 @@ const RequestsList = (props: { requestIds: string[] }) => {
                   <ContactList contacts={request.finalizedPairs} />
                 </>
               )}
-              <Spacer multiple={2} direction="y" />
+              {i + 1 !== requests.length && <Spacer multiple={2} direction="y" />}
             </div>
           )
         })
@@ -216,36 +216,53 @@ const percentRequestingWithoutMatch = (requests: FeedbackSessionRequest[],
   return (completedWithoutMatchCount / includedRequestsThatAreCompleted.length) * 100
 }
 
-const OverallStats = (props: {requestIds: string[]}) => {
+const OverallStats = (props: {requestIds: string[], filter: RequestFilter}) => {
   const requests = useFeedbackSessionRequestList(props.requestIds)
   const pairings = computeEmailToPairing(requests)
   return (
     <>
-      <h2>Overall Stats</h2>
-      <p>Complete: {percentComplete(requests).toFixed(0)}%</p>
-      <p>Requesting without match: {percentRequestingWithoutMatch(requests, pairings).toFixed(0)}%</p>
-      <Spacer multiple={1} direction="y" />
+      <p>Complete: {percentComplete(requests, props.filter).toFixed(0)}%</p>
+      <p>Requesting without match: {percentRequestingWithoutMatch(requests, pairings, props.filter).toFixed(0)}%</p>
     </>
   )
 }
+
+const FilterWrapper = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+})
+const StyledSelect = styled('select', {
+  minWidth: 150
+})
 
 const FilterSelectors = (props: {requestIds: string[], filterTeam?: string, setFilterTeam, filterRole?: string, setFilterRole}) => {
   const requests = useFeedbackSessionRequestList(props.requestIds)
   const allRoles = [...new Set(requests.map(r => r.requesteeRole))]
   const allTeams = [...new Set(requests.map(r => r.requesteeTeam))]
 
-  const defaultValue = "No team filter."
+  const teamDefault = "No team filter."
+  const roleDefault = "No role filter."
   return (
-    <>
-      <Select defaultValue={defaultValue}>
-        <SelectItem key={defaultValue} value={defaultValue}>{defaultValue}</SelectItem>
+    <FilterWrapper>
+      <StyledSelect defaultValue={teamDefault} onChange={(e) => props.setFilterTeam(e.target.value)}>
+        <option key={teamDefault} value={""}>{teamDefault}</option>
         {
           allTeams.map(team => (
-            team && <SelectItem key={team} value={team}>{team}</SelectItem>
+            team && <option key={team} value={team}>{team}</option>
           ))
         }
-      </Select>
-    </>
+      </StyledSelect>
+      <Spacer multiple={1} direction="x" />
+      <StyledSelect defaultValue={roleDefault} onChange={(e) => props.setFilterRole(e.target.value)}>
+        <option key={roleDefault} value={""}>{roleDefault}</option>
+        {
+          allRoles.map(role => (
+            role && <option key={role} value={role}>{role}</option>
+          ))
+        }
+      </StyledSelect>
+    </FilterWrapper>
   )
 }
 
@@ -263,15 +280,17 @@ const FilterSelectors = (props: {requestIds: string[], filterTeam?: string, setF
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
-  const [filterTeam, setFilterTeam] = React.useState<string|undefined>(undefined)
-  const [filterRole, setFilterRole] = React.useState<string|undefined>(undefined)
+  const [filterTeam, setFilterTeam] = React.useState<string>("")
+  const [filterRole, setFilterRole] = React.useState<string>("")
 
   if (!session.loaded || session.value === null) {
     return null
   }
 
   const requestIds = session.value?.feedbackSessionRequests || []
+  const filter: RequestFilter = {role: filterRole, team: filterTeam}
 
+  console.log(filter)
   return (
     <Wrapper>
       <Spacer multiple={2} direction='y' />
@@ -282,7 +301,11 @@ export const ExistingSession = () => {
       <p>Created at: {new Date(session.value.createdAt).toDateString()}</p>
       <Spacer multiple={1} direction="y" />
       <p>Finalized at: {session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : "Not yet."}</p>
-
+      <Spacer multiple={2} direction="y" />
+      <h2>Participants</h2>
+      <Spacer multiple={1} direction="y" />
+      <OverallStats requestIds={requestIds} filter={filter} />
+      <Spacer multiple={1} direction="y" />
       <FilterSelectors
         requestIds={requestIds}
         setFilterTeam={setFilterTeam}
@@ -290,14 +313,9 @@ export const ExistingSession = () => {
         filterTeam={filterTeam}
         filterRole={filterRole}
       />
-
-      <Spacer multiple={3} direction="y" />
-      <OverallStats requestIds={requestIds} />
-      <Spacer multiple={3} direction="y" />
-      <h2>Participants</h2>
-      <Spacer multiple={1} direction="y" />
-      <RequestsList requestIds={requestIds} />
-      <Spacer multiple={2} direction="y" />
+      <Spacer multiple={4} direction="y" />
+      <RequestsList requestIds={requestIds} filter={filter} />
+      <Spacer multiple={4} direction="y" />
       {!session.value.finalizedAt && <>
         <FinalizeButton sessionId={session.value.id} requestIds={requestIds} />
         <Spacer multiple={2} direction="y" />

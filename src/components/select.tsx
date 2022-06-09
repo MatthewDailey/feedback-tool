@@ -1,11 +1,18 @@
 import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons"
+import { styled } from "./styled"
+
+const StyledSelect = styled(SelectPrimitive.Root, {})
+
+const StyledItem = styled(SelectPrimitive.SelectItem, {
+
+})
 
 export const Select =
   React.forwardRef<HTMLButtonElement, SelectPrimitive.SelectProps>(({ children, ...props }, ref) => {
     return (
-      <SelectPrimitive.Root {...props} >
+      <StyledSelect {...props} >
         <SelectPrimitive.Trigger ref={ref}>
           <SelectPrimitive.Value />
           <SelectPrimitive.Icon>
@@ -21,19 +28,19 @@ export const Select =
             <ChevronDownIcon />
           </SelectPrimitive.ScrollDownButton>
         </SelectPrimitive.Content>
-      </SelectPrimitive.Root>
+      </StyledSelect>
     );
   })
 
 export const SelectItem = React.forwardRef<HTMLDivElement, SelectPrimitive.SelectItemProps>(
   ({ children, ...props }, ref) => {
     return (
-      <SelectPrimitive.Item {...props} ref={ref}>
+      <StyledItem {...props} ref={ref}>
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
         <SelectPrimitive.ItemIndicator>
           <CheckIcon />
         </SelectPrimitive.ItemIndicator>
-      </SelectPrimitive.Item>
+      </StyledItem>
     );
   })
 
