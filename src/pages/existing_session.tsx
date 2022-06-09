@@ -222,7 +222,7 @@ const OverallStats = (props: {requestIds: string[], filter: RequestFilter}) => {
   return (
     <>
       <p>Complete: {percentComplete(requests, props.filter).toFixed(0)}%</p>
-      <p>Requesting without match: {
+      <p>Requested pairing but no match found: {
         requests.some(r => r.requested) ?
           `${percentRequestingWithoutMatch(requests, pairings, props.filter).toFixed(0)}%`
           : "No pairings requested yet."
