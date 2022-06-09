@@ -29,3 +29,14 @@ export const useFeedbackSessionRequest = (id: string) : Load<FeedbackSessionRequ
   }
   return { loaded: true, value: { id, ...feedbackSessionRequests[id] }}
 }
+
+export const useFeedbackSessionRequestList = (requestIds: string[]) : FeedbackSessionRequest[] => {
+  const requestsLoads = requestIds.map((id) => useFeedbackSessionRequest(id))
+  const requests: FeedbackSessionRequest[] = []
+  requestsLoads.forEach(r => {
+    if (r.loaded && r.value) {
+      requests.push(r.value)
+    }
+  })
+  return requests
+}

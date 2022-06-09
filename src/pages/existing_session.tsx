@@ -4,11 +4,12 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useParams } from 'react-router-dom'
 import { ExtendedFirebaseInstance, useFirebase } from "react-redux-firebase"
 import { Contact, FeedbackSession, FeedbackSessionRequest } from "../lib/models"
-import { useFeedbackSessionRequest, useSession } from "../lib/data"
+import { useFeedbackSessionRequest, useFeedbackSessionRequestList, useSession } from "../lib/data"
 import { Spacer } from "../components/spacer"
 import { Button, Link } from "../components/ctas"
 import { Wrapper } from "../components/wrapper"
 import { colors, styled } from "../components/styled"
+import { Select, SelectItem } from "../components/select"
 
 type FeedbackPairing = { [email:string]: Contact[]|undefined }
 const computeEmailToPairing = (feedbackSessionRequests: FeedbackSessionRequest[]): FeedbackPairing => {
@@ -95,33 +96,31 @@ const ContactList = (props: { contacts?: Contact[]}) => {
 
 // Note: broke this out from ExistingSession to avoid additional hooks on render.
 const RequestsList = (props: { requestIds: string[] }) => {
-  const requests = props.requestIds.map((id) => useFeedbackSessionRequest(id))
+  const requests = useFeedbackSessionRequestList(props.requestIds)
   return (
     <div>
       {
         requests.map(request => {
-          if (!request.loaded || null === request.value) { return null }
-
           return (
-            <div key={request.value.requesteeEmail}>
+            <div key={request.requesteeEmail}>
               <span>
-                <h3>{request.value.requesteeName} ({request.value.requesteeEmail})</h3>
-                <Link href={`/participant/${request.value.id}`}>Participant link</Link>
+                <h3>{request.requesteeName} ({request.requesteeEmail})</h3>
+                <Link href={`/participant/${request.id}`}>Participant link</Link>
               </span>
               <Spacer multiple={0.5} direction="y" />
-              {request.value.requested ?
+              {request.requested ?
                 (
                   <>
                     <p>Requested:</p>
-                    <ContactList contacts={request.value.requestedPairs} />
+                    <ContactList contacts={request.requestedPairs} />
                   </>
                 ) : <p>Pairings not yet requested.</p>
               }
               <Spacer multiple={0.5} direction="y" />
-              {request.value.finalizedPairs && (
+              {request.finalizedPairs && (
                 <>
                   <p>Finalized:</p>
-                  <ContactList contacts={request.value.finalizedPairs} />
+                  <ContactList contacts={request.finalizedPairs} />
                 </>
               )}
               <Spacer multiple={2} direction="y" />
@@ -218,13 +217,7 @@ const percentRequestingWithoutMatch = (requests: FeedbackSessionRequest[],
 }
 
 const OverallStats = (props: {requestIds: string[]}) => {
-  const requestsLoads = props.requestIds.map((id) => useFeedbackSessionRequest(id))
-  const requests: FeedbackSessionRequest[] = []
-  requestsLoads.forEach(r => {
-    if (r.loaded && r.value) {
-      requests.push(r.value)
-    }
-  })
+  const requests = useFeedbackSessionRequestList(props.requestIds)
   const pairings = computeEmailToPairing(requests)
   return (
     <>
@@ -250,12 +243,18 @@ const OverallStats = (props: {requestIds: string[]}) => {
 export const ExistingSession = () => {
   const { sessionId }  = useParams()
   const session = useSession(sessionId)
+  const [filterTeam, setFilterTeam] = React.useState<string|undefined>(undefined)
+  const [filterRole, setFilterRole] = React.useState<string|undefined>(undefined)
 
   if (!session.loaded || session.value === null) {
     return null
   }
 
-  const requestIds = session.value.feedbackSessionRequests || []
+  const requestIds = session.value?.feedbackSessionRequests || []
+
+  const allTeams = {}
+  // const requests = useFeedbackSessionRequestList(requestIds)
+  // requests.forEach(r => {if(r.requesteeTeam) {allTeams[r.requesteeTeam] = true}})
 
   return (
     <Wrapper>
@@ -267,6 +266,15 @@ export const ExistingSession = () => {
       <p>Created at: {new Date(session.value.createdAt).toDateString()}</p>
       <Spacer multiple={1} direction="y" />
       <p>Finalized at: {session.value.finalizedAt ? new Date(session.value.finalizedAt).toDateString() : "Not yet."}</p>
+
+      <Select defaultValue={"None selected"}>
+        {
+          Object.keys(allTeams).map(team => (
+            <SelectItem value={team}>{team}</SelectItem>
+          ))
+        }
+      </Select>
+
       <Spacer multiple={3} direction="y" />
       <OverallStats requestIds={requestIds} />
       <Spacer multiple={3} direction="y" />

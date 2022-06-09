@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "firebase": "node_modules/firebase-tools/lib/bin/firebase.js",
-    "serve": "npm run firebase -- serve",
+    "serve": "npm run firebase -- serve --only hosting",
     "build-dev": "./node_modules/.bin/esbuild src/app.tsx --bundle --define:process.env.NODE_ENV=\\\"development\\\" --outfile=public/app.js",
     "build-prod": "./node_modules/.bin/esbuild src/app.tsx --bundle --minify --define:process.env.NODE_ENV=\\\"production\\\" --outfile=public/app.js",
     "compile": "node_modules/.bin/tsc && echo '✅ Build success' || echo '😢 Build failure' ",
@@ -26,6 +26,7 @@
     "@radix-ui/react-checkbox": "0.0.1",
     "@radix-ui/react-dialog": "0.0.6",
     "@radix-ui/react-icons": "^1.0.1",
+    "@radix-ui/react-select": "^0.1.1",
     "@radix-ui/react-tooltip": "0.0.2",
     "@stitches/react": "0.0.2",
     "@types/resize-observer-browser": "^0.1.5",
