@@ -17,6 +17,8 @@ export const createNewSession = async (firebase: ExtendedFirebaseInstance, owner
 
   await firebase.set(`users/${owner.uid}/feedbackSessions/${sessionId}`, createdAt)
 
+  // TODO (mjd): roll back session create if anything fails!
+
   // push feedbackSessionRequests
   const feedbackSessionRequestsPromise = participants.map(contact =>
     firebase.push('feedbackSessionRequests', {
